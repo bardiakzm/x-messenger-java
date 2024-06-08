@@ -117,7 +117,8 @@ public class SignUpPanel extends JPanel {
         int age = Integer.parseInt(ageField.getText());
         String bio = bioField.getText();
         Packet.sendNewUser(username, password, name, email, phone, age, bio);
-
+        // Packet.receiveFeedback();
+        JOptionPane.showMessageDialog(this, Main.lastServerMessage);
         // Implement your sign-up logic here
         // For example, save the user details to the database
         JOptionPane.showMessageDialog(this, "Sign Up successful!");
