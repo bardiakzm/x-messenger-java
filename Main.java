@@ -9,7 +9,7 @@ public class Main implements Serializable{
         // Packet.sendPacket("header", "hi",key);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new LoginPage();
+                new StartPage();
             }
         });
     }

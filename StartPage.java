@@ -6,11 +6,11 @@ import javax.swing.*;
 import java.net.Socket;
 import  java.io.ObjectOutputStream;
 
-public class LoginPage extends JFrame implements Serializable {
+public class StartPage extends JFrame implements Serializable {
     
-    public LoginPage() {
+    public StartPage() {
         // Set up the frame
-        setTitle("Login Page");
+        // setTitle("");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Add content to the window.
