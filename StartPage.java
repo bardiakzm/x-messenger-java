@@ -20,6 +20,13 @@ public class StartPage extends JFrame implements Serializable {
         setVisible(true);
     }
 
+    public void showStartPanel() {
+        setContentPane(new StartPanel(this));
+        revalidate();
+        repaint();
+    }
+
+
     public void showSignUpPanel() {
         setContentPane(new SignUpPanel(this));
         revalidate();
@@ -27,7 +34,7 @@ public class StartPage extends JFrame implements Serializable {
     }
 
     public void showLoginPanel() {
-        setContentPane(new StartPanel(this));
+        setContentPane(new LoginPanel(this));
         revalidate();
         repaint();
     }

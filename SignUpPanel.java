@@ -105,7 +105,7 @@ public class SignUpPanel extends JPanel {
 
         // Add action listeners for buttons
         submitButton.addActionListener(e -> handleSubmit());
-        backButton.addActionListener(e -> parentFrame.showLoginPanel());
+        backButton.addActionListener(e -> parentFrame.showStartPanel());
     }
 
     private void handleSubmit() {

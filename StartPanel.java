@@ -26,20 +26,7 @@ public class StartPanel extends JPanel {
         add(signUpButton, gbc);
 
         // Add action listeners for buttons
-        loginButton.addActionListener(e -> handleLogin());
+        loginButton.addActionListener(e -> parentFrame.showLoginPanel());
         signUpButton.addActionListener(e -> parentFrame.showSignUpPanel());
-    }
-
-    private void handleLogin() {
-        // String username = usernameField.getText();
-        // String password = new String(passwordField.getPassword());
-        
-        // Implement your login logic here
-        // if (username.equals("user") && password.equals("password")) {
-        //     JOptionPane.showMessageDialog(this, "Login successful!");
-        // } else {
-        //     JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        // }
-        JOptionPane.showMessageDialog(this, "Login button clicked!");
     }
 }
