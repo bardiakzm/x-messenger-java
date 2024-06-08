@@ -7,7 +7,7 @@ public class Packet implements Serializable {
     private static final long serialVersionUID = 1L;
     
     String connectionKey;
-    String header = "enmpty header";
+    String header = "empty header";
     Object data = "empty data";
     Packet(String header,Object data,String key){
         this.header = header;
