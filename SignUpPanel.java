@@ -116,6 +116,7 @@ public class SignUpPanel extends JPanel {
         String phone = phoneField.getText();
         int age = Integer.parseInt(ageField.getText());
         String bio = bioField.getText();
+        Packet.sendNewUser(username, password, name, email, phone, age, bio);
 
         // Implement your sign-up logic here
         // For example, save the user details to the database
