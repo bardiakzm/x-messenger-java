@@ -104,11 +104,11 @@ public class SignUpPanel extends JPanel {
         add(backButton, gbc);
 
         // Add action listeners for buttons
-        submitButton.addActionListener(e -> handleSubmit());
+        submitButton.addActionListener(e -> handleSubmit(parentFrame));
         backButton.addActionListener(e -> parentFrame.showStartPanel());
     }
 
-    private void handleSubmit() {
+    private void handleSubmit(StartPage parentFrame) {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
         String name = nameField.getText();
@@ -118,9 +118,12 @@ public class SignUpPanel extends JPanel {
         String bio = bioField.getText();
         Packet.sendNewUser(username, password, name, email, phone, age, bio);
         // Packet.receiveFeedback();
-        JOptionPane.showMessageDialog(this, Main.lastServerMessage);
-        // Implement your sign-up logic here
-        // For example, save the user details to the database
-        JOptionPane.showMessageDialog(this, "Sign Up successful!");
+        if (Main.lastServerMessage.equals("signupSuccessfull")) {
+            JOptionPane.showMessageDialog(this, Main.lastServerMessage);
+            parentFrame.showLoginPanel();
+        } else {
+            JOptionPane.showMessageDialog(this, Main.lastServerMessage);
+        }
+        // JOptionPane.showMessageDialog(this, "Sign Up successful!");
     }
 }

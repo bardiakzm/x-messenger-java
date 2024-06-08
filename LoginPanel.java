@@ -58,7 +58,11 @@ public class LoginPanel extends JPanel {
     private void handleSubmit() {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
+        Packet.loginUser(username, password);
         JOptionPane.showMessageDialog(this, Main.lastServerMessage);
-        JOptionPane.showMessageDialog(this, "Login successful!");
+        if(Main.lastReceivedPacket.header.equals("loginSuccessfull")){
+            
+        }
+        // JOptionPane.showMessageDialog(this, "Login successful!");
     }
 }

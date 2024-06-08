@@ -54,6 +54,7 @@ public class Packet implements Serializable {
             inputStream.close();
             // socket.close();
             Main.lastServerMessage = (String) feedbackPacket.data;
+            Main.lastReceivedPacket = feedbackPacket;
             return feedbackPacket;
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,6 +92,10 @@ public class Packet implements Serializable {
         User newUser = new User(username, password, name, email, phone, age, bio);
         sendPacket("newUser", newUser, Main.key);
     }
+    static void loginUser(String username, String password){
+        LoginPacket data = new LoginPacket(username, password);
+        sendPacket("loginUser", data, Main.key);
+    }
     static void handlePacket(Packet packet){
         switch (packet.header) {
             case "userAddFailed":
@@ -106,3 +111,5 @@ public class Packet implements Serializable {
     }
     
 }
+
+

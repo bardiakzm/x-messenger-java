@@ -5,7 +5,9 @@ import javax.swing.SwingUtilities;
 
 public class Main implements Serializable{
     final static String key = "uyaq2hAbK7tJXfqs";
+    static Packet lastReceivedPacket = null;
     static String lastServerMessage = "no message yet";
+
 
     // public static Socket socket;
     // public static ObjectOutputStream outputStream;
