@@ -1,5 +1,7 @@
 import java.awt.*;
+import java.util.List;
 import javax.swing.*;
+
 
 public class LoginPanel extends JPanel {
 
@@ -62,6 +64,12 @@ public class LoginPanel extends JPanel {
         JOptionPane.showMessageDialog(this, Main.lastServerMessage);
         if(Main.lastReceivedPacket.header.equals("loginSuccessfull")){
             //successfully logged in
+            List<Tweet> followingTweets = RandomTweetGenerator.generateRandomTweets();
+            List<Tweet> randomTweets = RandomTweetGenerator.generateRandomTweets2();
+            UserPage currentPanel = new UserPage(new User("bardia", "password", "username", "username", "password", 25, "password"), followingTweets, randomTweets);
+            add(currentPanel);
+            revalidate();
+            repaint();
         }
     }
 }
