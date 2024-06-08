@@ -61,8 +61,7 @@ public class LoginPanel extends JPanel {
         Packet.loginUser(username, password);
         JOptionPane.showMessageDialog(this, Main.lastServerMessage);
         if(Main.lastReceivedPacket.header.equals("loginSuccessfull")){
-            
+            //successfully logged in
         }
-        // JOptionPane.showMessageDialog(this, "Login successful!");
     }
 }
