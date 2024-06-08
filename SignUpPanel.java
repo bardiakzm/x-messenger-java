@@ -118,10 +118,12 @@ public class SignUpPanel extends JPanel {
         String bio = bioField.getText();
         Packet.sendNewUser(username, password, name, email, phone, age, bio);
         // Packet.receiveFeedback();
-        if (Main.lastServerMessage.equals("signupSuccessfull")) {
-            JOptionPane.showMessageDialog(this, Main.lastServerMessage);
+        if (Main.lastReceivedPacket.header.equals("signupSuccessfull")) {
+            System.out.println(Main.lastReceivedPacket.header);
             parentFrame.showLoginPanel();
+            JOptionPane.showMessageDialog(this, Main.lastServerMessage);
         } else {
+            System.out.println(Main.lastReceivedPacket.header);
             JOptionPane.showMessageDialog(this, Main.lastServerMessage);
         }
         // JOptionPane.showMessageDialog(this, "Sign Up successful!");
