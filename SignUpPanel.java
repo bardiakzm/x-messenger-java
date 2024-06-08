@@ -45,74 +45,62 @@ public class SignUpPanel extends JPanel {
         // Add components to the panel
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.LINE_END;
         add(usernameLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
         add(usernameField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.LINE_END;
         add(passwordLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
         add(passwordField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.LINE_END;
         add(nameLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
         add(nameField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.LINE_END;
         add(emailLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
         add(emailField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.LINE_END;
         add(phoneLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
         add(phoneField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.LINE_END;
         add(ageLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
         add(ageField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 6;
-        gbc.anchor = GridBagConstraints.LINE_END;
         add(bioLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
         add(bioScrollPane, gbc);
 
-        gbc.gridx = 0;
+        gbc.insets = new Insets(10, 50, 10, 10);
+        gbc.gridx = 1;
         gbc.gridy = 7;
         gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
         add(submitButton, gbc);
 
-        gbc.gridy = 8;
+        gbc.insets = new Insets(10, 10, 10, 50);
+        gbc.gridx = 0;
+        gbc.gridy = 7;
         add(backButton, gbc);
 
         // Add action listeners for buttons
