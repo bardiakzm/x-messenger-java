@@ -3,9 +3,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 import javax.swing.*;
+import java.net.Socket;
+import  java.io.ObjectOutputStream;
 
 public class LoginPage extends JFrame implements Serializable {
-
+    
     public LoginPage() {
         // Set up the frame
         setTitle("Login Page");
