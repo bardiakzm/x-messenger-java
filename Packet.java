@@ -3,6 +3,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.List;
 
 public class Packet implements Serializable {
@@ -105,6 +106,20 @@ public class Packet implements Serializable {
     static void getAllTweets(){
         sendPacket("getAllTweets", null, Main.key);
     }
+
+    static void getUserFollowings(String username){
+        sendPacket("getUserFollowings", username, Main.key);
+    }
+
+    static void unfollowUser(String username,String targetUsername){
+        DoubleUserName data = new DoubleUserName(username,targetUsername);
+        sendPacket("unfollow", data, Main.key);
+    }
+
+    static void followUser(String username,String targetUsername){
+        DoubleUserName data = new DoubleUserName(username,targetUsername);
+        sendPacket("follow", data, Main.key);
+    }
     @SuppressWarnings("unchecked")
     static void handlePacket(Packet packet){
         switch (packet.header) {
@@ -120,7 +135,10 @@ public class Packet implements Serializable {
                 Main.allTweets = (List<Tweet>) packet.data;
                 System.out.println(packet.header);
                 break;
-        
+            case "sentUserFollowings":
+                Main.currentUserFollowings = (HashSet<String>) packet.data;
+                System.out.println(packet.header);
+                break;
             default:
                 break;
         }
@@ -128,4 +146,13 @@ public class Packet implements Serializable {
     
 }
 
+class DoubleUserName implements Serializable {
+    private static final long serialVersionUID = 1L;
+    String username;
+    String targetUsername;
+    DoubleUserName(String username,String targetUsername){
+        this.username = username;
+        this.targetUsername = targetUsername;
+    }
+}
 

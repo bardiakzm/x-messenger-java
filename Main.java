@@ -11,7 +11,7 @@ public class Main implements Serializable{
     static Packet lastReceivedPacket = null;
     static String lastServerMessage = "no message yet";
     static List<Tweet> allTweets;
-    static Set<String> currentUserFollowings;
+    static Set<String> currentUserFollowings = new HashSet<String>();
 
     public static void main(String[] args) {
 

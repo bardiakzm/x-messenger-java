@@ -38,6 +38,7 @@ public class StartPage extends JFrame implements Serializable {
         revalidate();
         repaint();
     }
+    
 
     
     public static void main(String[] args) {

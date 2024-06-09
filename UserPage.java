@@ -1,13 +1,10 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.swing.*;
 
 public class UserPage extends JFrame {
     private String username;
@@ -24,7 +21,8 @@ public class UserPage extends JFrame {
         this.followingTweets = followingTweets;
         this.randomTweets = randomTweets;
         this.savedTweets = new ArrayList<>();
-        this.followedUsers = new HashSet<>();
+        this.followedUsers =  Main.currentUserFollowings;
+        // this.followedUsers.add("ali");
         setTitle("User Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -103,10 +101,14 @@ public class UserPage extends JFrame {
             // Add action listener for follow/unfollow button
             followButton.addActionListener(e -> {
                 if (followedUsers.contains(tweet.username)) {
-                    followedUsers.remove(tweet.username);
+                    followedUsers.remove(tweet.username); //unfollow user
+                    Packet.unfollowUser(username, tweet.username);
+                    Packet.getUserFollowings(username);
                     followButton.setText("Follow");
                 } else {
-                    followedUsers.add(tweet.username);
+                    followedUsers.add(tweet.username); //follow user
+                    Packet.followUser(username, tweet.username);
+                    Packet.getUserFollowings(username);
                     followButton.setText("Unfollow");
                 }
             });
