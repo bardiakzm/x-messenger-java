@@ -5,22 +5,26 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserPage extends JFrame {
     private String username;
     private List<Tweet> followingTweets;
     private List<Tweet> randomTweets;
     private List<Tweet> savedTweets;
+    private Set<String> followedUsers;
 
     private JPanel tweetPanel;
-    private JTextField tweetTextField; // Declare the tweetTextField here
+    private JTextField tweetTextField;
 
     public UserPage(String username, List<Tweet> followingTweets, List<Tweet> randomTweets) {
         this.username = username;
         this.followingTweets = followingTweets;
         this.randomTweets = randomTweets;
         this.savedTweets = new ArrayList<>();
+        this.followedUsers = new HashSet<>();
         setTitle("User Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -47,7 +51,7 @@ public class UserPage extends JFrame {
 
         // Create bottom panel for composing tweets
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        tweetTextField = new JTextField(); // Initialize the tweetTextField
+        tweetTextField = new JTextField();
         JButton composeButton = new JButton("Compose");
         bottomPanel.add(tweetTextField, BorderLayout.CENTER);
         bottomPanel.add(composeButton, BorderLayout.EAST);
@@ -84,23 +88,26 @@ public class UserPage extends JFrame {
             JPanel buttonPanel = new JPanel();
             JButton saveButton = new JButton("Save");
             JButton likeButton = new JButton("Like");
+            JButton followButton = new JButton(followedUsers.contains(tweet.username) ? "Unfollow" : "Follow");
             buttonPanel.add(saveButton);
             buttonPanel.add(likeButton);
+            buttonPanel.add(followButton);
             tweetContainer.add(tweetLabel, BorderLayout.CENTER);
             tweetContainer.add(buttonPanel, BorderLayout.EAST);
             tweetPanel.add(tweetContainer);
 
             // Add action listeners for save and like buttons
-            saveButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    saveTweet(tweet);
-                }
-            });
-            likeButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    likeTweet(tweet);
+            saveButton.addActionListener(e -> saveTweet(tweet));
+            likeButton.addActionListener(e -> likeTweet(tweet));
+
+            // Add action listener for follow/unfollow button
+            followButton.addActionListener(e -> {
+                if (followedUsers.contains(tweet.username)) {
+                    followedUsers.remove(tweet.username);
+                    followButton.setText("Follow");
+                } else {
+                    followedUsers.add(tweet.username);
+                    followButton.setText("Unfollow");
                 }
             });
         }
