@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class UserPage extends JFrame {
@@ -66,18 +68,25 @@ public class UserPage extends JFrame {
             }
         });
 
-
         // Show the window
-        setSize(800, 810);
+        setSize(800, 600);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     private void showTweets(List<Tweet> tweets) {
+        // Sort tweets by timestamp
+        Collections.sort(tweets, new Comparator<Tweet>() {
+            @Override
+            public int compare(Tweet t1, Tweet t2) {
+                return t2.getTimestamp().compareTo(t1.getTimestamp());
+            }
+        });
+
         tweetPanel.removeAll();
         for (Tweet tweet : tweets) {
             JPanel tweetContainer = new JPanel(new BorderLayout());
-            JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.likes + ")");
+            JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.likes + ") " + tweet.getFormattedTimestamp());
             JPanel buttonPanel = new JPanel();
             JButton saveButton = new JButton("Save");
             JButton likeButton = new JButton("Like");
@@ -116,4 +125,5 @@ public class UserPage extends JFrame {
         showTweets(randomTweets);
         showTweets(savedTweets);
     }
+
 }
