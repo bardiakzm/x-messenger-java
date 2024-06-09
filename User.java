@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -10,6 +12,8 @@ public class User implements Serializable {
     String phone;
     int age;
     String bio;
+    Set<String> followings;
+    Set<String> followers;
 
     public User(String username, String password, String name, String email, String phone, int age, String bio) {
         this.username = username;
@@ -19,5 +23,37 @@ public class User implements Serializable {
         this.phone = phone;
         this.age = age;
         this.bio = bio;
+        this.followings = new HashSet<>();
+        this.followers = new HashSet<>();
+    }
+
+    // Add a following
+    public void addFollowing(String username) {
+        followings.add(username);
+    }
+
+    // Remove a following
+    public void removeFollowing(String username) {
+        followings.remove(username);
+    }
+
+    // Add a follower
+    public void addFollower(String username) {
+        followers.add(username);
+    }
+
+    // Remove a follower
+    public void removeFollower(String username) {
+        followers.remove(username);
+    }
+
+    // Get followings
+    public Set<String> getFollowings() {
+        return followings;
+    }
+
+    // Get followers
+    public Set<String> getFollowers() {
+        return followers;
     }
 }
