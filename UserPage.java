@@ -122,6 +122,8 @@ public class UserPage extends JFrame {
 
     private void composeTweet(String text) {
         Packet.sendtweet(username, text);
+        Packet.getAllTweets();
+        randomTweets = Main.allTweets;
         // Here you can implement the logic to post the composed tweet
         // For now, let's just print the composed tweet text
         System.out.println("Composed Tweet: " + text);

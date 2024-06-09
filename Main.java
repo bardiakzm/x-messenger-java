@@ -8,7 +8,7 @@ public class Main implements Serializable{
     final static String key = "uyaq2hAbK7tJXfqs";
     static Packet lastReceivedPacket = null;
     static String lastServerMessage = "no message yet";
-    static List<String> allTweets;
+    static List<Tweet> allTweets;
 
     public static void main(String[] args) {
 

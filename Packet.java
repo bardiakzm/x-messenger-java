@@ -54,7 +54,7 @@ public class Packet implements Serializable {
             Main.lastServerMessage = feedbackPacket.header;
             inputStream.close();
             // socket.close();
-            Main.lastServerMessage = (String) feedbackPacket.data;
+            
             Main.lastReceivedPacket = feedbackPacket;
             return feedbackPacket;
         } catch (IOException e) {
@@ -109,13 +109,15 @@ public class Packet implements Serializable {
     static void handlePacket(Packet packet){
         switch (packet.header) {
             case "userAddFailed":
+                Main.lastServerMessage = (String) packet.data;
                 System.out.println(packet.header);
                 break;
             case "userAddSuccessfull":
+                Main.lastServerMessage = (String) packet.data;
                 System.out.println(packet.header);
                 break;
             case "sentAllTweets":
-                Main.allTweets = (List<String>) packet.data;
+                Main.allTweets = (List<Tweet>) packet.data;
                 System.out.println(packet.header);
                 break;
         

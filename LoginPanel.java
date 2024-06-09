@@ -66,7 +66,8 @@ public class LoginPanel extends JPanel {
             //successfully logged in
             List<Tweet> followingTweets = RandomTweetGenerator.generateRandomTweets();
             List<Tweet> randomTweets = RandomTweetGenerator.generateRandomTweets2();
-            UserPage currentPanel = new UserPage("bardia", followingTweets, randomTweets);
+            Packet.getAllTweets();
+            UserPage currentPanel = new UserPage("bardia", followingTweets, Main.allTweets);
             add(currentPanel);
             revalidate();
             repaint();
