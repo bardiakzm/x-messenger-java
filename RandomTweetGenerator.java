@@ -27,7 +27,7 @@ public class RandomTweetGenerator {
         for (int i = 0; i < randomTweetTexts.length; i++) {
             // Pick a random user
             User randomUser = getRandomUser(i, user1, user2, user3);
-            Tweet tweet = new Tweet(randomUser, randomTweetTexts[i]);
+            Tweet tweet = new Tweet(randomUser.username, randomTweetTexts[i]);
             randomTweets.add(tweet);
         }
 
@@ -58,7 +58,7 @@ public class RandomTweetGenerator {
         for (int i = 0; i < randomTweetTexts.length; i++) {
             // Pick a random user
             User randomUser = getRandomUser(i, user4, user5, user6);
-            Tweet tweet = new Tweet(randomUser, randomTweetTexts[i]);
+            Tweet tweet = new Tweet(randomUser.username, randomTweetTexts[i]);
             randomTweets.add(tweet);
         }
 

@@ -8,15 +8,16 @@ import java.util.Comparator;
 import java.util.List;
 
 public class UserPage extends JFrame {
-    private User user;
+    private String username;
     private List<Tweet> followingTweets;
     private List<Tweet> randomTweets;
     private List<Tweet> savedTweets;
 
     private JPanel tweetPanel;
+    private JTextField tweetTextField; // Declare the tweetTextField here
 
-    public UserPage(User user, List<Tweet> followingTweets, List<Tweet> randomTweets) {
-        this.user = user;
+    public UserPage(String username, List<Tweet> followingTweets, List<Tweet> randomTweets) {
+        this.username = username;
         this.followingTweets = followingTweets;
         this.randomTweets = randomTweets;
         this.savedTweets = new ArrayList<>();
@@ -29,44 +30,37 @@ public class UserPage extends JFrame {
         JButton profileButton = new JButton("Profile");
         JButton savedTweetsButton = new JButton("Saved Tweets");
         topPanel.add(profileButton);
-        topPanel.add(Box.createHorizontalGlue());
         topPanel.add(savedTweetsButton);
 
         // Create button panel
         JPanel buttonPanel = new JPanel();
         JButton followingButton = new JButton("Following Tweets");
         JButton randomButton = new JButton("Random Tweets");
-        buttonPanel.add(followingButton);
-        buttonPanel.add(randomButton);
+        topPanel.add(followingButton);
+        topPanel.add(randomButton);
+        topPanel.add(savedTweetsButton);
 
         // Create tweet panel
         tweetPanel = new JPanel();
         tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(tweetPanel);
 
+        // Create bottom panel for composing tweets
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        tweetTextField = new JTextField(); // Initialize the tweetTextField
+        JButton composeButton = new JButton("Compose");
+        bottomPanel.add(tweetTextField, BorderLayout.CENTER);
+        bottomPanel.add(composeButton, BorderLayout.EAST);
+
         add(topPanel, BorderLayout.NORTH);
-        add(buttonPanel, BorderLayout.SOUTH);
         add(scrollPane, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
 
         // Add action listeners
-        followingButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showTweets(followingTweets);
-            }
-        });
-        randomButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showTweets(randomTweets);
-            }
-        });
-        savedTweetsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showTweets(savedTweets);
-            }
-        });
+        followingButton.addActionListener(e -> showTweets(followingTweets));
+        randomButton.addActionListener(e -> showTweets(randomTweets));
+        savedTweetsButton.addActionListener(e -> showTweets(savedTweets));
+        composeButton.addActionListener(e -> composeTweet(tweetTextField.getText()));
 
         // Show the window
         setSize(800, 600);
@@ -86,7 +80,7 @@ public class UserPage extends JFrame {
         tweetPanel.removeAll();
         for (Tweet tweet : tweets) {
             JPanel tweetContainer = new JPanel(new BorderLayout());
-            JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.likes + ") " + tweet.getFormattedTimestamp());
+            JLabel tweetLabel = new JLabel(tweet.username + ": " + tweet.text + " (Likes: " + tweet.likes + ") " + tweet.getFormattedTimestamp());
             JPanel buttonPanel = new JPanel();
             JButton saveButton = new JButton("Save");
             JButton likeButton = new JButton("Like");
@@ -126,4 +120,10 @@ public class UserPage extends JFrame {
         showTweets(savedTweets);
     }
 
+    private void composeTweet(String text) {
+        Packet.sendtweet(username, text);
+        // Here you can implement the logic to post the composed tweet
+        // For now, let's just print the composed tweet text
+        System.out.println("Composed Tweet: " + text);
+    }
 }

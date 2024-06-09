@@ -3,6 +3,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.List;
 
 public class Packet implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -92,16 +93,29 @@ public class Packet implements Serializable {
         User newUser = new User(username, password, name, email, phone, age, bio);
         sendPacket("newUser", newUser, Main.key);
     }
+    static void sendtweet(String username,String text){
+        Tweet tweet = new Tweet(username, text);
+        sendPacket("newTweet", tweet, Main.key);
+    }
     static void loginUser(String username, String password){
         LoginPacket data = new LoginPacket(username, password);
         sendPacket("loginUser", data, Main.key);
     }
+
+    static void getAllTweets(){
+        sendPacket("getAllTweets", null, Main.key);
+    }
+    @SuppressWarnings("unchecked")
     static void handlePacket(Packet packet){
         switch (packet.header) {
             case "userAddFailed":
                 System.out.println(packet.header);
                 break;
             case "userAddSuccessfull":
+                System.out.println(packet.header);
+                break;
+            case "sentAllTweets":
+                Main.allTweets = (List<String>) packet.data;
                 System.out.println(packet.header);
                 break;
         
