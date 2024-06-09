@@ -9,12 +9,13 @@ public class LoginPanel extends JPanel {
     private JPasswordField passwordField;
     private JButton submitButton;
     private JButton backButton;
+    private StartPage parentFrame;
 
     public LoginPanel(StartPage parentFrame) {
         // Create and set up components
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
-
+        this.parentFrame = parentFrame;
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
 
@@ -67,10 +68,9 @@ public class LoginPanel extends JPanel {
             List<Tweet> followingTweets = RandomTweetGenerator.generateRandomTweets();
             List<Tweet> randomTweets = RandomTweetGenerator.generateRandomTweets2();
             Packet.getAllTweets();
-            UserPage currentPanel = new UserPage(username, followingTweets, Main.allTweets);
-            add(currentPanel);
-            revalidate();
-            repaint();
+            
+            UserPage userPage = new UserPage(username, followingTweets, Main.allTweets);
+            parentFrame.showUserPage(userPage);
         }
     }
 }

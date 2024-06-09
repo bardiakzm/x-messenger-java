@@ -6,26 +6,26 @@ import java.util.List;
 import java.util.Set;
 import javax.swing.*;
 
-public class UserPage extends JFrame {
+public class UserPage extends JPanel {
     private String username;
     private List<Tweet> followingTweets;
     private List<Tweet> randomTweets;
     private List<Tweet> savedTweets;
     private Set<String> followedUsers;
+    private StartPage startPage; // Reference to the StartPage
 
     private JPanel tweetPanel;
     private JTextField tweetTextField;
 
     public UserPage(String username, List<Tweet> followingTweets, List<Tweet> randomTweets) {
+        setLayout(new BorderLayout());
         this.username = username;
         this.followingTweets = followingTweets;
         this.randomTweets = randomTweets;
         this.savedTweets = new ArrayList<>();
         this.followedUsers =  Main.currentUserFollowings;
-        // this.followedUsers.add("ali");
-        setTitle("User Page");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+
 
         // Create top panel with buttons
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
@@ -66,10 +66,13 @@ public class UserPage extends JFrame {
 
         // Show the window
         setSize(800, 600);
-        setLocationRelativeTo(null);
+        // setLocationRelativeTo(null);
         setVisible(true);
     }
 
+    public void setStartPage(StartPage startPage) {
+        this.startPage = startPage;
+    }
     private void showTweets(List<Tweet> tweets) {
         // Sort tweets by timestamp
         Collections.sort(tweets, new Comparator<Tweet>() {
