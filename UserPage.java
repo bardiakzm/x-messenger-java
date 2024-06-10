@@ -69,23 +69,21 @@ public class UserPage extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
+        showTweets(randomTweets,randomButton);
         // Add action listeners
-        followingButton.addActionListener(e -> showTweets(followingTweets));
-        randomButton.addActionListener(e -> showTweets(randomTweets));
-        savedTweetsButton.addActionListener(e -> showTweets(savedTweets));
-        composeButton.addActionListener(e -> composeTweet(tweetTextField.getText()));
+        followingButton.addActionListener(e -> showTweets(followingTweets,followingButton));
+        randomButton.addActionListener(e -> showTweets(randomTweets,randomButton));
+        savedTweetsButton.addActionListener(e -> showTweets(savedTweets,savedTweetsButton));
+        composeButton.addActionListener(e -> composeTweet(tweetTextField.getText(),composeButton));
 
-        // Show the window
-        setSize(800, 600);
-        // setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     public void setStartPage(StartPage startPage) {
         this.startPage = startPage;
     }
-    private void showTweets(List<Tweet> tweets) {
+    private void showTweets(List<Tweet> tweets,JButton parentButton) {
         // Sort tweets by timestamp
+        updateTweetLists();
         Collections.sort(tweets, new Comparator<Tweet>() {
             @Override
             public int compare(Tweet t1, Tweet t2) {
@@ -109,25 +107,19 @@ public class UserPage extends JPanel {
             tweetPanel.add(tweetContainer);
 
             // Add action listeners for save and like buttons
-            saveButton.addActionListener(e -> saveTweet(tweet));
-            likeButton.addActionListener(e -> likeTweet(tweet,likeButton));
+            saveButton.addActionListener(e -> saveTweet(tweet,parentButton));
+            likeButton.addActionListener(e -> likeTweet(tweet,likeButton,parentButton));
 
             // Add action listener for follow/unfollow button
             followButton.addActionListener(e -> {
                 if (followedUsers.contains(tweet.publisherid)) {
                     followedUsers.remove(tweet.publisherid); //unfollow user
-                    Packet.unfollowUser(username, tweet.publisherid);
-                    Packet.getFollowingTweets(username);
-                    this.followedUsers =  Main.currentUserFollowings;
-                    this.followingTweets = Main.currentUserFollowingTweets;
                     followButton.setText("Follow");
+                    parentButton.doClick();;
                 } else {
                     followedUsers.add(tweet.publisherid); //follow user
-                    Packet.followUser(username, tweet.publisherid);
-                    Packet.getFollowingTweets(username);
-                    this.followedUsers =  Main.currentUserFollowings;
-                    this.followingTweets = Main.currentUserFollowingTweets;
                     followButton.setText("Unfollow");
+                    parentButton.doClick();
                 }
             });
         }
@@ -135,43 +127,39 @@ public class UserPage extends JPanel {
         tweetPanel.repaint();
     }
 
-    private void saveTweet(Tweet tweet) {
-        // savedTweets.add(tweet);
-        // JOptionPane.showMessageDialog(this, "Tweet saved successfully!");
+    private void saveTweet(Tweet tweet,JButton parentButton) {
         Packet.saveTweet(username, tweet);
-        Packet.getSavedTweets(username);
-        this.savedTweets = Main.currentUserSavedTweets;
+        updateTweetLists();
+        parentButton.doClick();
     }
 
-    private void likeTweet(Tweet tweet,JButton likeButton) {
-        // showTweets(followingTweets);
-        // showTweets(randomTweets);
-        // showTweets(savedTweets);
+    private void likeTweet(Tweet tweet,JButton likeButton,JButton parentButton) {
         if(tweet.likedUsers.contains(username)){
             Packet.removeLike(tweet, username);
-            updateTweetLists();
             likeButton.setText("Like");
         }
         else{
             Packet.likeTweet(tweet, username);
-            updateTweetLists();
             likeButton.setText("unLike");
         }
+        updateTweetLists();
+        parentButton.doClick();
     }
 
-    private void composeTweet(String text) {
+    private void composeTweet(String text,JButton parentButton) {
         Packet.sendtweet(username, text);
-        Packet.getAllTweets();
-        this.randomTweets = Main.allTweets;
+        parentButton.doClick();
         System.out.println("Composed Tweet: " + text);
-        tweetPanel.revalidate();
-        tweetPanel.repaint();
     }
 
     private void updateTweetLists(){
         Packet.getSavedTweets(username);
         Packet.getAllTweets();
+        Packet.getSavedTweets(username);
+        this.savedTweets = Main.currentUserSavedTweets;
         this.savedTweets = Main.currentUserSavedTweets;
         this.randomTweets = Main.allTweets;
     }
+
+    
 }
