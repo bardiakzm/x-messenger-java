@@ -57,7 +57,9 @@ public class Packet implements Serializable {
         sendPacket("newUser", newUser, Main.key);
     }
     static void sendtweet(String username,String text){
-        Tweet tweet = new Tweet(username, text);
+        getCurrentTweetNumber();
+        Main.currentTweetNumber++;
+        Tweet tweet = new Tweet(username, text,Main.currentTweetNumber);
         sendPacket("newTweet", tweet, Main.key);
     }
     static void loginUser(String username, String password){
@@ -76,6 +78,10 @@ public class Packet implements Serializable {
     static void getUserFollowings(String username){
         sendPacket("getUserFollowings", username, Main.key);
         
+    }
+
+    static void getCurrentTweetNumber(){
+        sendPacket("getCurrentTweetNumber", null, Main.key);
     }
 
     static void unfollowUser(String username,String targetUsername){
@@ -121,6 +127,11 @@ public class Packet implements Serializable {
                 break;
             case "sentFollowingTweets":
                 Main.currentUserFollowingTweets = (List<Tweet>) packet.data;
+                Main.lastServerMessage = (String) packet.header;
+                System.out.println(packet.header);
+                break;
+            case "sentCurrentTweetNumber":
+                Main.currentTweetNumber= (int) packet.data;
                 Main.lastServerMessage = (String) packet.header;
                 System.out.println(packet.header);
                 break;

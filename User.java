@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public class User implements Serializable {
     String bio;
     HashSet<String> followings;
     HashSet<String> followers;
+    ArrayList<Tweet> savedTweets;
 
     public User(String username, String password, String name, String email, String phone, int age, String bio) {
         this.username = username;
@@ -25,6 +27,7 @@ public class User implements Serializable {
         this.bio = bio;
         this.followings = new HashSet<>();
         this.followers = new HashSet<>();
+        this.savedTweets = new ArrayList<>();
     }
 
     // Add a following

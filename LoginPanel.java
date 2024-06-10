@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.List;
 import javax.swing.*;
 
 
@@ -65,8 +64,8 @@ public class LoginPanel extends JPanel {
         JOptionPane.showMessageDialog(this, Main.lastServerMessage);
         if(Main.lastReceivedPacket.header.equals("loginSuccessfull")){
             //successfully logged in
-            List<Tweet> followingTweets = RandomTweetGenerator.generateRandomTweets();
-            List<Tweet> randomTweets = RandomTweetGenerator.generateRandomTweets2();
+            // List<Tweet> followingTweets = RandomTweetGenerator.generateRandomTweets();
+            // List<Tweet> randomTweets = RandomTweetGenerator.generateRandomTweets2();
             Packet.getAllTweets();
             Packet.getFollowingTweets(username);
             

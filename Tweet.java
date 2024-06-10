@@ -9,13 +9,15 @@ public class Tweet implements Serializable {
     String text;
     int likes;
     Date timestamp;
+    int tweetNumber;
 
-    Tweet(String username, String text) {
+    Tweet(String username, String text,int tweetNumber) {
         this.username = username;
         // this.publisherid = publisher.username;
         this.text = text;
         this.likes = 0;
         this.timestamp = new Date(); // Set the current date and time
+        this.tweetNumber = tweetNumber;
     }
 
     public String getFormattedTimestamp() {

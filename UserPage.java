@@ -26,6 +26,11 @@ public class UserPage extends JPanel {
         Packet.getUserFollowings(username);
         Packet.getFollowingTweets(username);
         this.followedUsers =  Main.currentUserFollowings;
+        this.followingTweets = Main.currentUserFollowingTweets;
+        for (int i=0;i<followingTweets.size();i++){ {
+            System.out.println("set number" + i);
+            System.out.println(followingTweets.toArray()[i]);
+        }}
         // for (int i = 0; i < followedUsers.size() ; i++) {
         //     System.out.println("set number" + i);
         //     System.out.println(followedUsers.toArray()[i]);
@@ -113,11 +118,13 @@ public class UserPage extends JPanel {
                 if (followedUsers.contains(tweet.username)) {
                     followedUsers.remove(tweet.username); //unfollow user
                     Packet.unfollowUser(username, tweet.username);
+                    Packet.getFollowingTweets(username);
                     // Packet.getUserFollowings(username);
                     followButton.setText("Follow");
                 } else {
                     followedUsers.add(tweet.username); //follow user
                     Packet.followUser(username, tweet.username);
+                    Packet.getFollowingTweets(username);
                     // Packet.getUserFollowings(username);
                     followButton.setText("Unfollow");
                 }

@@ -14,6 +14,7 @@ public class Main implements Serializable{
     static List<Tweet> allTweets;
     static List<Tweet> currentUserFollowingTweets;
     static Set<String> currentUserFollowings = new HashSet<String>();
+    static int currentTweetNumber = 0;
 
     public static void main(String[] args) {
 
