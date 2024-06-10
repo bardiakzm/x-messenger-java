@@ -39,4 +39,8 @@ public class Tweet implements Serializable {
     public void addLikedUser(String username){
         likedUsers.add(username);
     }
+
+    public void removeLikedUser(String username){
+        likedUsers.remove(username);
+    }
 }

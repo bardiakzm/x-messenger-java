@@ -99,7 +99,7 @@ public class UserPage extends JPanel {
             JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.getLikeCount() + ") " + tweet.getFormattedTimestamp());
             JPanel buttonPanel = new JPanel();
             JButton saveButton = new JButton("Save");
-            JButton likeButton = new JButton("Like");
+            JButton likeButton = new JButton(tweet.likedUsers.contains(username) ? "unlike" : "like");
             JButton followButton = new JButton(followedUsers.contains(tweet.publisherid) ? "Unfollow" : "Follow");
             buttonPanel.add(saveButton);
             buttonPanel.add(likeButton);
@@ -110,7 +110,7 @@ public class UserPage extends JPanel {
 
             // Add action listeners for save and like buttons
             saveButton.addActionListener(e -> saveTweet(tweet));
-            likeButton.addActionListener(e -> likeTweet(tweet));
+            likeButton.addActionListener(e -> likeTweet(tweet,likeButton));
 
             // Add action listener for follow/unfollow button
             followButton.addActionListener(e -> {
@@ -143,16 +143,20 @@ public class UserPage extends JPanel {
         this.savedTweets = Main.currentUserSavedTweets;
     }
 
-    private void likeTweet(Tweet tweet) {
-        // tweet.likes++;
+    private void likeTweet(Tweet tweet,JButton likeButton) {
         // showTweets(followingTweets);
         // showTweets(randomTweets);
         // showTweets(savedTweets);
-        Packet.likeTweet(tweet, username);
-        Packet.getSavedTweets(username);
-        Packet.getAllTweets();
-        this.savedTweets = Main.currentUserSavedTweets;
-        this.randomTweets = Main.allTweets;
+        if(tweet.likedUsers.contains(username)){
+            Packet.removeLike(tweet, username);
+            updateTweetLists();
+            likeButton.setText("Like");
+        }
+        else{
+            Packet.likeTweet(tweet, username);
+            updateTweetLists();
+            likeButton.setText("unLike");
+        }
     }
 
     private void composeTweet(String text) {
@@ -160,5 +164,14 @@ public class UserPage extends JPanel {
         Packet.getAllTweets();
         this.randomTweets = Main.allTweets;
         System.out.println("Composed Tweet: " + text);
+        tweetPanel.revalidate();
+        tweetPanel.repaint();
+    }
+
+    private void updateTweetLists(){
+        Packet.getSavedTweets(username);
+        Packet.getAllTweets();
+        this.savedTweets = Main.currentUserSavedTweets;
+        this.randomTweets = Main.allTweets;
     }
 }
