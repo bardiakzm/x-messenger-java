@@ -114,10 +114,12 @@ public class UserPage extends JPanel {
             followButton.addActionListener(e -> {
                 if (followedUsers.contains(tweet.publisherid)) {
                     followedUsers.remove(tweet.publisherid); //unfollow user
+                    Packet.unfollowUser(username, tweet.publisherid);
                     followButton.setText("Follow");
-                    parentButton.doClick();;
+                    parentButton.doClick();
                 } else {
                     followedUsers.add(tweet.publisherid); //follow user
+                    Packet.followUser(username, tweet.publisherid);
                     followButton.setText("Unfollow");
                     parentButton.doClick();
                 }
