@@ -93,6 +93,22 @@ public class Packet implements Serializable {
         DoubleUserName data = new DoubleUserName(username,targetUsername);
         sendPacket("follow", data, Main.key);
     }
+
+    static void saveTweet(String saverUsername,Tweet tweet){
+        SaveTweetPack data = new SaveTweetPack(saverUsername, tweet);
+        sendPacket("saveTweet", data, Main.key);
+    }
+
+    static void likeTweet(Tweet tweet,String likerUsername){
+        SaveTweetPack data = new SaveTweetPack(likerUsername, tweet);
+        sendPacket("like", data, Main.key);
+        System.out.println("sent like request");
+    }
+
+    static void getSavedTweets(String username){
+        sendPacket("getSavedTweets", username, Main.key);
+    }
+
     @SuppressWarnings("unchecked")
     static void handlePacket(Packet packet){
         switch (packet.header) {
@@ -135,7 +151,19 @@ public class Packet implements Serializable {
                 Main.lastServerMessage = (String) packet.header;
                 System.out.println(packet.header);
                 break;
-
+            case "savedTweet":
+                Main.lastServerMessage = (String) packet.data;
+                System.out.println(Main.lastServerMessage);
+                break;
+            case "sentSavedTweets":
+                Main.lastServerMessage = (String) packet.header;
+                Main.currentUserSavedTweets = (List<Tweet>) packet.data;
+                System.out.println(Main.lastServerMessage);
+                break;
+            case "liked":
+                Main.lastServerMessage = (String) packet.data;
+                System.out.println(Main.lastServerMessage);
+                break;
             default:
                 break;
         }
@@ -150,6 +178,16 @@ class DoubleUserName implements Serializable {
     DoubleUserName(String username,String targetUsername){
         this.username = username;
         this.targetUsername = targetUsername;
+    }
+}
+
+class SaveTweetPack implements Serializable {
+    private static final long serialVersionUID = 1L;
+    String saverUserame;
+    Tweet tweet;
+    SaveTweetPack(String saverUserame,Tweet tweet){
+        this.saverUserame = saverUserame;
+        this.tweet = tweet;
     }
 }
 

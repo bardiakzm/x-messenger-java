@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -8,10 +7,10 @@ import javax.swing.*;
 
 public class UserPage extends JPanel {
     private String username;
-    private List<Tweet> followingTweets=Main.currentUserFollowingTweets;
+    private List<Tweet> followingTweets;
     private List<Tweet> randomTweets;
     private List<Tweet> savedTweets;
-    private Set<String> followedUsers=Main.currentUserFollowings;
+    private Set<String> followedUsers;
     private StartPage startPage; // Reference to the StartPage
 
     private JPanel tweetPanel;
@@ -22,11 +21,12 @@ public class UserPage extends JPanel {
         this.username = username;
         this.followingTweets = followingTweets;
         this.randomTweets = randomTweets;
-        this.savedTweets = new ArrayList<>();
+        Packet.getSavedTweets(username);
         Packet.getUserFollowings(username);
         Packet.getFollowingTweets(username);
         this.followedUsers =  Main.currentUserFollowings;
         this.followingTweets = Main.currentUserFollowingTweets;
+        this.savedTweets = Main.currentUserSavedTweets;
         for (int i=0;i<followingTweets.size();i++){ {
             System.out.println("set number" + i);
             System.out.println(followingTweets.toArray()[i]);
@@ -85,7 +85,6 @@ public class UserPage extends JPanel {
         this.startPage = startPage;
     }
     private void showTweets(List<Tweet> tweets) {
-        // Packet.getUserFollowings(username);
         // Sort tweets by timestamp
         Collections.sort(tweets, new Comparator<Tweet>() {
             @Override
@@ -97,11 +96,11 @@ public class UserPage extends JPanel {
         tweetPanel.removeAll();
         for (Tweet tweet : tweets) {
             JPanel tweetContainer = new JPanel(new BorderLayout());
-            JLabel tweetLabel = new JLabel(tweet.username + ": " + tweet.text + " (Likes: " + tweet.likes + ") " + tweet.getFormattedTimestamp());
+            JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.getLikeCount() + ") " + tweet.getFormattedTimestamp());
             JPanel buttonPanel = new JPanel();
             JButton saveButton = new JButton("Save");
             JButton likeButton = new JButton("Like");
-            JButton followButton = new JButton(followedUsers.contains(tweet.username) ? "Unfollow" : "Follow");
+            JButton followButton = new JButton(followedUsers.contains(tweet.publisherid) ? "Unfollow" : "Follow");
             buttonPanel.add(saveButton);
             buttonPanel.add(likeButton);
             buttonPanel.add(followButton);
@@ -115,17 +114,19 @@ public class UserPage extends JPanel {
 
             // Add action listener for follow/unfollow button
             followButton.addActionListener(e -> {
-                if (followedUsers.contains(tweet.username)) {
-                    followedUsers.remove(tweet.username); //unfollow user
-                    Packet.unfollowUser(username, tweet.username);
+                if (followedUsers.contains(tweet.publisherid)) {
+                    followedUsers.remove(tweet.publisherid); //unfollow user
+                    Packet.unfollowUser(username, tweet.publisherid);
                     Packet.getFollowingTweets(username);
-                    // Packet.getUserFollowings(username);
+                    this.followedUsers =  Main.currentUserFollowings;
+                    this.followingTweets = Main.currentUserFollowingTweets;
                     followButton.setText("Follow");
                 } else {
-                    followedUsers.add(tweet.username); //follow user
-                    Packet.followUser(username, tweet.username);
+                    followedUsers.add(tweet.publisherid); //follow user
+                    Packet.followUser(username, tweet.publisherid);
                     Packet.getFollowingTweets(username);
-                    // Packet.getUserFollowings(username);
+                    this.followedUsers =  Main.currentUserFollowings;
+                    this.followingTweets = Main.currentUserFollowingTweets;
                     followButton.setText("Unfollow");
                 }
             });
@@ -135,21 +136,29 @@ public class UserPage extends JPanel {
     }
 
     private void saveTweet(Tweet tweet) {
-        savedTweets.add(tweet);
-        JOptionPane.showMessageDialog(this, "Tweet saved successfully!");
+        // savedTweets.add(tweet);
+        // JOptionPane.showMessageDialog(this, "Tweet saved successfully!");
+        Packet.saveTweet(username, tweet);
+        Packet.getSavedTweets(username);
+        this.savedTweets = Main.currentUserSavedTweets;
     }
 
     private void likeTweet(Tweet tweet) {
-        tweet.likes++;
-        showTweets(followingTweets);
-        showTweets(randomTweets);
-        showTweets(savedTweets);
+        // tweet.likes++;
+        // showTweets(followingTweets);
+        // showTweets(randomTweets);
+        // showTweets(savedTweets);
+        Packet.likeTweet(tweet, username);
+        Packet.getSavedTweets(username);
+        Packet.getAllTweets();
+        this.savedTweets = Main.currentUserSavedTweets;
+        this.randomTweets = Main.allTweets;
     }
 
     private void composeTweet(String text) {
         Packet.sendtweet(username, text);
         Packet.getAllTweets();
-        randomTweets = Main.allTweets;
+        this.randomTweets = Main.allTweets;
         System.out.println("Composed Tweet: " + text);
     }
 }
