@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class UserPage extends JPanel {
     private String username;
-    private List<Tweet> followingTweets;
+    private List<Tweet> followingTweets=Main.currentUserFollowingTweets;
     private List<Tweet> randomTweets;
     private List<Tweet> savedTweets;
     private Set<String> followedUsers=Main.currentUserFollowings;
@@ -24,6 +24,7 @@ public class UserPage extends JPanel {
         this.randomTweets = randomTweets;
         this.savedTweets = new ArrayList<>();
         Packet.getUserFollowings(username);
+        Packet.getFollowingTweets(username);
         this.followedUsers =  Main.currentUserFollowings;
         // for (int i = 0; i < followedUsers.size() ; i++) {
         //     System.out.println("set number" + i);

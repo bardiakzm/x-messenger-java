@@ -69,6 +69,10 @@ public class Packet implements Serializable {
         sendPacket("getAllTweets", null, Main.key);
     }
 
+    static void getFollowingTweets(String username){
+        sendPacket("getFollowingTweets", username, Main.key);
+    }
+
     static void getUserFollowings(String username){
         sendPacket("getUserFollowings", username, Main.key);
         
@@ -111,6 +115,16 @@ public class Packet implements Serializable {
                 Main.currentUserFollowings = (HashSet<String>) packet.data;
                 System.out.println(packet.header);
                 break;
+            case "tweeted":
+                Main.lastServerMessage = (String) packet.data;
+                System.out.println(packet.header);
+                break;
+            case "sentFollowingTweets":
+                Main.currentUserFollowingTweets = (List<Tweet>) packet.data;
+                Main.lastServerMessage = (String) packet.header;
+                System.out.println(packet.header);
+                break;
+
             default:
                 break;
         }

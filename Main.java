@@ -1,5 +1,6 @@
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 import java.util.List;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ public class Main implements Serializable{
     static Packet lastReceivedPacket = null;
     static String lastServerMessage = "no message yet";
     static List<Tweet> allTweets;
+    static List<Tweet> currentUserFollowingTweets;
     static Set<String> currentUserFollowings = new HashSet<String>();
 
     public static void main(String[] args) {

@@ -12,8 +12,8 @@ public class User implements Serializable {
     String phone;
     int age;
     String bio;
-    Set<String> followings;
-    Set<String> followers;
+    HashSet<String> followings;
+    HashSet<String> followers;
 
     public User(String username, String password, String name, String email, String phone, int age, String bio) {
         this.username = username;
