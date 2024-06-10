@@ -136,10 +136,12 @@ public class UserPage extends JPanel {
     private void likeTweet(Tweet tweet,JButton likeButton,JButton parentButton) {
         if(tweet.likedUsers.contains(username)){
             Packet.removeLike(tweet, username);
+            tweet.removeLikedUser(username);
             likeButton.setText("Like");
         }
         else{
             Packet.likeTweet(tweet, username);
+            tweet.addLikedUser(username);
             likeButton.setText("unLike");
         }
         updateTweetLists();
