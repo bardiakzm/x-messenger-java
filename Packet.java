@@ -25,37 +25,24 @@ public class Packet implements Serializable {
         try {
             Socket socket = new Socket(serverip, serverPort);
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-            // ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
             outputStream.writeObject(packet);
             outputStream.flush();
 
-            // Packet feedbackPacket = (Packet) inputStream.readObject();
-            // handlePacket(feedbackPacket);
             receiveFeedback(socket);
-            outputStream.close();
-            // inputStream.close();
-            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } //catch (ClassNotFoundException ex) {
-        // }
+        } 
     }
     static Packet receiveFeedback(Socket socket){
-        final String serverip = "127.0.0.1"; 
-        final int serverPort = 8080;
         Packet feedbackPacket=null;
         try {
-            // Socket socket = new Socket(serverip, serverPort);
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-
 
             feedbackPacket = (Packet) inputStream.readObject();
             handlePacket(feedbackPacket);
             Main.lastServerMessage = feedbackPacket.header;
             inputStream.close();
-            // socket.close();
-            
             Main.lastReceivedPacket = feedbackPacket;
             return feedbackPacket;
         } catch (IOException e) {
@@ -64,31 +51,6 @@ public class Packet implements Serializable {
          }
          return feedbackPacket;
     }
-
-    // static Packet receiveFeedback() {
-    //     final String serverip = "127.0.0.1";
-    //     final int serverPort = 8080;
-    //     Packet feedbackPacket = null;
-
-    //     try (Socket socket = new Socket(serverip, serverPort);
-    //          BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-
-    //         String line;
-    //         StringBuilder response = new StringBuilder();
-    //         while ((line = reader.readLine()) != null) {
-    //             response.append(line);
-    //         }
-
-    //         // Assuming your feedback is sent as a string, you can process it accordingly
-    //         String feedbackData = response.toString();
-    //         feedbackPacket = new Packet("feedback", feedbackData, "");
-    //         Main.lastServerMessage = feedbackData;
-
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return feedbackPacket;
-    // }
 
     static void sendNewUser(String username, String password, String name, String email, String phone, int age, String bio){
         User newUser = new User(username, password, name, email, phone, age, bio);
@@ -109,6 +71,7 @@ public class Packet implements Serializable {
 
     static void getUserFollowings(String username){
         sendPacket("getUserFollowings", username, Main.key);
+        
     }
 
     static void unfollowUser(String username,String targetUsername){
@@ -136,6 +99,15 @@ public class Packet implements Serializable {
                 System.out.println(packet.header);
                 break;
             case "sentUserFollowings":
+                Main.currentUserFollowings = (HashSet<String>) packet.data;
+                System.out.println("synced user followings with server");
+                System.out.println(packet.header);
+                break;
+            case "followed":
+                Main.currentUserFollowings = (HashSet<String>) packet.data;
+                System.out.println(packet.header);
+                break;
+            case "unfollowed":
                 Main.currentUserFollowings = (HashSet<String>) packet.data;
                 System.out.println(packet.header);
                 break;

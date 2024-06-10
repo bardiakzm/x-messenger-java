@@ -11,7 +11,7 @@ public class UserPage extends JPanel {
     private List<Tweet> followingTweets;
     private List<Tweet> randomTweets;
     private List<Tweet> savedTweets;
-    private Set<String> followedUsers;
+    private Set<String> followedUsers=Main.currentUserFollowings;
     private StartPage startPage; // Reference to the StartPage
 
     private JPanel tweetPanel;
@@ -23,7 +23,12 @@ public class UserPage extends JPanel {
         this.followingTweets = followingTweets;
         this.randomTweets = randomTweets;
         this.savedTweets = new ArrayList<>();
+        Packet.getUserFollowings(username);
         this.followedUsers =  Main.currentUserFollowings;
+        // for (int i = 0; i < followedUsers.size() ; i++) {
+        //     System.out.println("set number" + i);
+        //     System.out.println(followedUsers.toArray()[i]);
+        // }
         setLayout(new BorderLayout());
 
 
@@ -74,6 +79,7 @@ public class UserPage extends JPanel {
         this.startPage = startPage;
     }
     private void showTweets(List<Tweet> tweets) {
+        // Packet.getUserFollowings(username);
         // Sort tweets by timestamp
         Collections.sort(tweets, new Comparator<Tweet>() {
             @Override
@@ -106,12 +112,12 @@ public class UserPage extends JPanel {
                 if (followedUsers.contains(tweet.username)) {
                     followedUsers.remove(tweet.username); //unfollow user
                     Packet.unfollowUser(username, tweet.username);
-                    Packet.getUserFollowings(username);
+                    // Packet.getUserFollowings(username);
                     followButton.setText("Follow");
                 } else {
                     followedUsers.add(tweet.username); //follow user
                     Packet.followUser(username, tweet.username);
-                    Packet.getUserFollowings(username);
+                    // Packet.getUserFollowings(username);
                     followButton.setText("Unfollow");
                 }
             });
