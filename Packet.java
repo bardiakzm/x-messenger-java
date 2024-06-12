@@ -99,6 +99,11 @@ public class Packet implements Serializable {
         sendPacket("saveTweet", data, Main.key);
     }
 
+    static void unSaveTweet(String saverUsername,Tweet tweet){
+        SaveTweetPack data = new SaveTweetPack(saverUsername, tweet);
+        sendPacket("unSaveTweet", data, Main.key);
+    }
+
     static void likeTweet(Tweet tweet,String likerUsername){
         SaveTweetPack data = new SaveTweetPack(likerUsername, tweet);
         sendPacket("like", data, Main.key);
