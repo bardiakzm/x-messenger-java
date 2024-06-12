@@ -119,6 +119,10 @@ public class Packet implements Serializable {
     static void getSavedTweets(String username){
         sendPacket("getSavedTweets", username, Main.key);
     }
+    
+    static void deleteTweet(Tweet tweet){
+        sendPacket("deleteTweet", tweet, Main.key);
+    }
 
     @SuppressWarnings("unchecked")
     static void handlePacket(Packet packet){
@@ -180,6 +184,10 @@ public class Packet implements Serializable {
                 System.out.println(Main.lastServerMessage);
                 break;
             case "removedLike":
+                Main.lastServerMessage = (String) packet.data;
+                System.out.println(Main.lastServerMessage);
+                break;
+            case "deletedTweet":
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
                 break;

@@ -117,6 +117,12 @@ public class UserPage extends JPanel {
             JPanel tweetContainer = new JPanel(new BorderLayout());
             JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.getLikeCount() + ") " + tweet.getFormattedTimestamp());
             JPanel buttonPanel = new JPanel();
+            boolean deleteExists = doesUserOwnTweet(tweet, username);
+            if(deleteExists){
+                JButton deleteButton = new JButton("Delete");
+                buttonPanel.add(deleteButton);
+                deleteButton.addActionListener(e -> deleteTweet(tweet,deleteButton,parentButton));
+            }
             JButton saveButton = new JButton(doesListContainTweet(tweet, savedTweets) ? "unSave" : "Save");
             JButton likeButton = new JButton(tweet.likedUsers.contains(username) ? "unLike" : "Like");
             JButton followButton = new JButton(followedUsers.contains(tweet.publisherid) ? "Unfollow" : "Follow");
@@ -207,5 +213,12 @@ public class UserPage extends JPanel {
         return null;
     }
 
-    
+    private void deleteTweet(Tweet tweet,JButton deleteButton,JButton parentButton) {
+        Packet.deleteTweet(tweet);
+        parentButton.doClick();
+    }
+
+    static boolean doesUserOwnTweet(Tweet tweet,String username){
+        return tweet.publisherid.equals(username);
+    }
 }
