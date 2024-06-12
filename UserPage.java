@@ -80,31 +80,30 @@ public class UserPage extends JPanel {
     private void showTweets(String tweetType, JButton parentButton) {
         List<Tweet> tweets;
     switch (tweetType) {
-        case "Following":
+        case "Following" -> {
+            Packet.getAllTweets();
             Packet.getFollowingTweets(username);
             Packet.getSavedTweets(username);
             tweets = Main.currentUserFollowingTweets;
             followedUsers = Main.currentUserFollowings;
-            break;
-        case "Random":
+            }
+        case "Random" -> {
             Packet.getAllTweets();
             Packet.getFollowingTweets(username);
             Packet.getSavedTweets(username);
             tweets = Main.allTweets;
             followedUsers = Main.currentUserFollowings;
-            break;
-        case "Saved":
+            }
+        case "Saved" -> {
+            Packet.getAllTweets();
             Packet.getFollowingTweets(username);
             Packet.getSavedTweets(username);
             tweets = Main.currentUserSavedTweets;
             followedUsers = Main.currentUserFollowings;
-            break;
-        default:
-            tweets = new ArrayList<>();
-            break;
+            }
+        default -> tweets = new ArrayList<>();
     }
         // Sort tweets by timestamp
-        updateTweetLists();
         Collections.sort(tweets, new Comparator<Tweet>() {
             @Override
             public int compare(Tweet t1, Tweet t2) {
@@ -113,7 +112,8 @@ public class UserPage extends JPanel {
         });
 
         tweetPanel.removeAll();
-        for (Tweet tweet : tweets) {
+        for (Tweet tweeti : tweets) {
+            final Tweet tweet = getTweetFromList(tweeti, randomTweets);
             JPanel tweetContainer = new JPanel(new BorderLayout());
             JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.getLikeCount() + ") " + tweet.getFormattedTimestamp());
             JPanel buttonPanel = new JPanel();
@@ -196,6 +196,15 @@ public class UserPage extends JPanel {
             }
         }
         return false;
+    }
+
+    private Tweet getTweetFromList(Tweet tweet,List<Tweet> list){
+        for (int i=0;i<list.size();i++){
+            if(list.get(i).tweetNumber == tweet.tweetNumber){
+                return list.get(i);
+            }
+        }
+        return null;
     }
 
     
