@@ -166,6 +166,10 @@ public class Packet implements Serializable {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
                 break;
+            case "unSavedTweet":
+                Main.lastServerMessage = (String) packet.data;
+                System.out.println(Main.lastServerMessage);
+                break;
             case "sentSavedTweets":
                 Main.lastServerMessage = (String) packet.header;
                 Main.currentUserSavedTweets = (List<Tweet>) packet.data;
