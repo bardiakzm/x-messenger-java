@@ -113,22 +113,29 @@ public class UserPage extends JPanel {
 
         tweetPanel.removeAll();
         for (Tweet tweeti : tweets) {
-            final Tweet tweet = getTweetFromList(tweeti, randomTweets);
+            final Tweet tweet = getTweetFromList(tweeti, randomTweets);//get the updated tweet from all tweets list
             JPanel tweetContainer = new JPanel(new BorderLayout());
+            JPanel profileButtonPanel = new JPanel();
+            JButton targetUserProfileButton = new JButton("Profile");
+            profileButtonPanel.add(targetUserProfileButton);
+            JButton followButton = new JButton(followedUsers.contains(tweet.publisherid) ? "Unfollow" : "Follow");
+            profileButtonPanel.add(followButton);
+
             JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.getLikeCount() + ") " + tweet.getFormattedTimestamp());
-            JPanel buttonPanel = new JPanel();
+            JPanel buttonPanel = new JPanel();  
             boolean deleteExists = doesUserOwnTweet(tweet, username);
+            JButton saveButton = new JButton(doesListContainTweet(tweet, savedTweets) ? "unSave" : "Save");
+            JButton likeButton = new JButton(tweet.likedUsers.contains(username) ? "unLike" : "Like");
+            JButton commentButton = new JButton("Comments");
+            buttonPanel.add(commentButton);
+            buttonPanel.add(likeButton);
+            buttonPanel.add(saveButton);
             if(deleteExists){
                 JButton deleteButton = new JButton("Delete");
                 buttonPanel.add(deleteButton);
                 deleteButton.addActionListener(e -> deleteTweet(tweet,deleteButton,parentButton));
             }
-            JButton saveButton = new JButton(doesListContainTweet(tweet, savedTweets) ? "unSave" : "Save");
-            JButton likeButton = new JButton(tweet.likedUsers.contains(username) ? "unLike" : "Like");
-            JButton followButton = new JButton(followedUsers.contains(tweet.publisherid) ? "Unfollow" : "Follow");
-            buttonPanel.add(saveButton);
-            buttonPanel.add(likeButton);
-            buttonPanel.add(followButton);
+            tweetContainer.add(profileButtonPanel, BorderLayout.WEST);
             tweetContainer.add(tweetLabel, BorderLayout.CENTER);
             tweetContainer.add(buttonPanel, BorderLayout.EAST);
             tweetPanel.add(tweetContainer);
