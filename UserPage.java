@@ -17,6 +17,8 @@ public class UserPage extends JPanel {
     private JPanel tweetPanel;
     private JTextField tweetTextField;
 
+    private JButton lastTouchedButton; //
+
     public UserPage(String username, List<Tweet> followingTweets, List<Tweet> randomTweets) {
         setLayout(new BorderLayout());
         this.username = username;
@@ -78,6 +80,7 @@ public class UserPage extends JPanel {
         this.startPage = startPage;
     }
     private void showTweets(String tweetType, JButton parentButton) {
+        lastTouchedButton = parentButton;
         List<Tweet> tweets;
     switch (tweetType) {
         case "Following" -> {
@@ -189,7 +192,8 @@ public class UserPage extends JPanel {
 
     private void composeTweet(String text,JButton parentButton) {
         Packet.sendtweet(username, text);
-        parentButton.doClick();
+        updateTweetLists();
+        lastTouchedButton.doClick();
         System.out.println("Composed Tweet: " + text);
     }
 
