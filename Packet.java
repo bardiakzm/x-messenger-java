@@ -9,6 +9,7 @@ import java.util.List;
 public class Packet implements Serializable {
     private static final long serialVersionUID = 1L;
     
+    static private User lastReceivedUser = null;
     String connectionKey;
     String header = "empty header";
     Object data = "empty data";
@@ -54,74 +55,82 @@ public class Packet implements Serializable {
 
     static void sendNewUser(String username, String password, String name, String email, String phone, int age, String bio){
         User newUser = new User(username, password, name, email, phone, age, bio);
-        sendPacket("newUser", newUser, Main.key);
+        sendPacket("newUser", newUser, Main.getKey());
     }
     static void sendtweet(String username,String text){
         getCurrentTweetNumber();
         Main.currentTweetNumber++;
         Tweet tweet = new Tweet(username, text,Main.currentTweetNumber);
-        sendPacket("newTweet", tweet, Main.key);
+        sendPacket("newTweet", tweet, Main.getKey());
     }
     static void loginUser(String username, String password){
         LoginPacket data = new LoginPacket(username, password);
-        sendPacket("loginUser", data, Main.key);
+        sendPacket("loginUser", data, Main.getKey());
     }
 
     static void getAllTweets(){
-        sendPacket("getAllTweets", null, Main.key);
+        sendPacket("getAllTweets", null, Main.getKey());
     }
 
     static void getFollowingTweets(String username){
-        sendPacket("getFollowingTweets", username, Main.key);
+        sendPacket("getFollowingTweets", username, Main.getKey());
     }
 
     static void getUserFollowings(String username){
-        sendPacket("getUserFollowings", username, Main.key);
+        sendPacket("getUserFollowings", username, Main.getKey());
         
     }
 
     static void getCurrentTweetNumber(){
-        sendPacket("getCurrentTweetNumber", null, Main.key);
+        sendPacket("getCurrentTweetNumber", null, Main.getKey());
+    }
+
+    static void getUser(String username){
+        sendPacket("getUser", username, Main.getKey());
+    }
+
+    static User getLastReceivedUser(){
+        return lastReceivedUser;
     }
 
     static void unfollowUser(String username,String targetUsername){
         DoubleUserName data = new DoubleUserName(username,targetUsername);
-        sendPacket("unfollow", data, Main.key);
+        sendPacket("unfollow", data, Main.getKey());
     }
 
     static void followUser(String username,String targetUsername){
         DoubleUserName data = new DoubleUserName(username,targetUsername);
-        sendPacket("follow", data, Main.key);
+        sendPacket("follow", data, Main.getKey());
     }
 
     static void saveTweet(String saverUsername,Tweet tweet){
         SaveTweetPack data = new SaveTweetPack(saverUsername, tweet);
-        sendPacket("saveTweet", data, Main.key);
+        sendPacket("saveTweet", data, Main.getKey());
     }
 
     static void unSaveTweet(String saverUsername,Tweet tweet){
         SaveTweetPack data = new SaveTweetPack(saverUsername, tweet);
-        sendPacket("unSaveTweet", data, Main.key);
+        sendPacket("unSaveTweet", data, Main.getKey());
     }
 
     static void likeTweet(Tweet tweet,String likerUsername){
         SaveTweetPack data = new SaveTweetPack(likerUsername, tweet);
-        sendPacket("like", data, Main.key);
+        sendPacket("like", data, Main.getKey());
         System.out.println("sent like request");
     }
 
     static void removeLike(Tweet tweet,String likerUsername){
         SaveTweetPack data = new SaveTweetPack(likerUsername, tweet);
-        sendPacket("removeLike", data, Main.key);
+        sendPacket("removeLike", data, Main.getKey());
         System.out.println("sent remove like request");
     }
 
     static void getSavedTweets(String username){
-        sendPacket("getSavedTweets", username, Main.key);
+        sendPacket("getSavedTweets", username, Main.getKey());
     }
     
     static void deleteTweet(Tweet tweet){
-        sendPacket("deleteTweet", tweet, Main.key);
+        sendPacket("deleteTweet", tweet, Main.getKey());
     }
 
     @SuppressWarnings("unchecked")
@@ -189,6 +198,11 @@ public class Packet implements Serializable {
                 break;
             case "deletedTweet":
                 Main.lastServerMessage = (String) packet.data;
+                System.out.println(Main.lastServerMessage);
+                break;
+            case "sentUser":
+                lastReceivedUser = (User)packet.data;
+                Main.lastServerMessage = (String) packet.header;
                 System.out.println(Main.lastServerMessage);
                 break;
             default:

@@ -19,7 +19,7 @@ public class UserPage extends JPanel {
 
     private JButton lastTouchedButton; //
 
-    public UserPage(String username, List<Tweet> followingTweets, List<Tweet> randomTweets) {
+    public UserPage(String username, List<Tweet> followingTweets, List<Tweet> randomTweets,StartPage parentFrame) {
         setLayout(new BorderLayout());
         this.username = username;
         this.followingTweets = followingTweets;
@@ -43,6 +43,7 @@ public class UserPage extends JPanel {
         JButton savedTweetsButton = new JButton("Saved Tweets");
         topPanel.add(profileButton);
         topPanel.add(savedTweetsButton);
+        profileButton.addActionListener(e -> parentFrame.showProfilePanel(username));
 
         // Create button panel
         JPanel buttonPanel = new JPanel();

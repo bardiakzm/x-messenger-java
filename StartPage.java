@@ -49,7 +49,13 @@ public class StartPage extends JFrame implements Serializable {
         cardLayout.show(mainPanel, "UserPage");
     }
 
-    
+    public void showProfilePanel(String username) {
+        ProfilePanel profilePanel = new ProfilePanel(username);
+        mainPanel.add(profilePanel, "ProfilePanel");
+        cardLayout.show(mainPanel, "ProfilePanel");
+        revalidate();
+        repaint();
+    }
 
     
     
