@@ -1,5 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 public class ProfilePanel extends JPanel {
     
@@ -15,13 +17,22 @@ public class ProfilePanel extends JPanel {
     private JList<String> followingsList;
     private JButton returnButton;
 
-    public ProfilePanel(String username, StartPage parentFrame,UserPage userPage) {
+    public ProfilePanel(String username, StartPage parentFrame, UserPage userPage) {
         Packet.getUser(username);
         currentUser = Packet.getLastReceivedUser();
 
         setLayout(new BorderLayout());
+
+        // Return button
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        returnButton = new JButton("Return");
+        returnButton.addActionListener(e -> parentFrame.showUserPage(userPage));
+        topPanel.add(returnButton);
+        add(topPanel, BorderLayout.NORTH);
+
         // Create the user info panel
         JPanel userInfoPanel = new JPanel(new GridLayout(6, 2, 5, 5));
+        userInfoPanel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add some padding
 
         usernameLabel = new JLabel();
         nameLabel = new JLabel();
@@ -43,7 +54,15 @@ public class ProfilePanel extends JPanel {
         userInfoPanel.add(new JLabel("Bio:"));
         userInfoPanel.add(bioLabel);
 
-        add(userInfoPanel, BorderLayout.NORTH);
+        // Create a container for the user info panel with a titled border
+        JPanel userInfoContainer = new JPanel(new BorderLayout());
+        userInfoContainer.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(), "User Information",
+                TitledBorder.LEFT, TitledBorder.TOP));
+        userInfoContainer.add(userInfoPanel, BorderLayout.CENTER);
+
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.add(userInfoContainer, BorderLayout.NORTH);
 
         // Create the tweets list
         tweetsList = new JList<>();
@@ -66,13 +85,9 @@ public class ProfilePanel extends JPanel {
         listsPanel.add(followersScrollPane);
         listsPanel.add(followingsScrollPane);
 
-        add(listsPanel, BorderLayout.CENTER);
+        centerPanel.add(listsPanel, BorderLayout.CENTER);
 
-        // Return button
-        returnButton = new JButton("Return");
-        returnButton.addActionListener(e -> parentFrame.showUserPage(userPage));
-
-        add(returnButton, BorderLayout.SOUTH);
+        add(centerPanel, BorderLayout.CENTER);
 
         // Load user data
         loadUserData();

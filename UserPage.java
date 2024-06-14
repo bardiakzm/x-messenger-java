@@ -30,10 +30,10 @@ public class UserPage extends JPanel {
         this.followedUsers =  Main.currentUserFollowings;
         this.followingTweets = Main.currentUserFollowingTweets;
         this.savedTweets = Main.currentUserSavedTweets;
-        for (int i=0;i<followingTweets.size();i++){ {
-            System.out.println("set number" + i);
-            System.out.println(followingTweets.toArray()[i]);
-        }}
+        // for (int i=0;i<followingTweets.size();i++){ {
+        //     System.out.println("set number" + i);
+        //     System.out.println(followingTweets.toArray()[i]);
+        // }}
         setLayout(new BorderLayout());
 
 
@@ -41,17 +41,20 @@ public class UserPage extends JPanel {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         JButton profileButton = new JButton("Profile");
         JButton savedTweetsButton = new JButton("Saved Tweets");
+        JButton logOutButton = new JButton("Log out");
         topPanel.add(profileButton);
         topPanel.add(savedTweetsButton);
         profileButton.addActionListener(e -> parentFrame.showProfilePanel(username,parentFrame,this));
 
         // Create button panel
-        JPanel buttonPanel = new JPanel();
+        // JPanel buttonPanel = new JPanel();
         JButton followingButton = new JButton("Following Tweets");
         JButton randomButton = new JButton("Random Tweets");
         topPanel.add(followingButton);
         topPanel.add(randomButton);
         topPanel.add(savedTweetsButton);
+        topPanel.add(logOutButton,BorderLayout.EAST);
+        logOutButton.addActionListener(e -> parentFrame.showStartPanel());
 
         // Create tweet panel
         tweetPanel = new JPanel();
