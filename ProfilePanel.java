@@ -28,6 +28,24 @@ public class ProfilePanel extends JPanel {
         returnButton = new JButton("Return");
         returnButton.addActionListener(e -> parentFrame.showUserPage(userPage));
         topPanel.add(returnButton);
+        if(username != null && !username.equals(Main.logedInUserid)){
+            boolean doesLogedUserFollowProfileUser = currentUser.followers.contains(Main.logedInUserid);
+            JButton followButton = new JButton(doesLogedUserFollowProfileUser?"unFollow" : "Follow");
+            topPanel.add(followButton);
+            if(doesLogedUserFollowProfileUser){ //unfollow
+                followButton.addActionListener((e) -> {
+                    Packet.unfollowUser(Main.logedInUserid,currentUser.username);
+                    updateUser();
+                    followButton.setText("Follow");
+                });
+            }else{ //follow
+                followButton.addActionListener((e) -> {
+                    Packet.followUser(Main.logedInUserid,currentUser.username);
+                    updateUser();
+                    followButton.setText("unFollow");
+                });
+            }
+        }
         add(topPanel, BorderLayout.NORTH);
 
         // Create the user info panel
@@ -128,5 +146,10 @@ public class ProfilePanel extends JPanel {
         } else {
             JOptionPane.showMessageDialog(this, "User not found.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void updateUser(){
+        Packet.getUser(currentUser.username);
+        currentUser = Packet.getLastReceivedUser();
     }
 }

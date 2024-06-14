@@ -68,6 +68,8 @@ public class LoginPanel extends JPanel {
             // List<Tweet> randomTweets = RandomTweetGenerator.generateRandomTweets2();
             Packet.getAllTweets();
             Packet.getFollowingTweets(username);
+
+            Main.logedInUserid = username;
             
             UserPage userPage = new UserPage(username, Main.currentUserFollowingTweets, Main.allTweets,parentFrame);
             parentFrame.showUserPage(userPage);
