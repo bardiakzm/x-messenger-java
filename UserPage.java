@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import javax.swing.*;
@@ -113,12 +112,7 @@ public class UserPage extends JPanel {
         default -> tweets = new ArrayList<>();
     }
         // Sort tweets by timestamp
-        Collections.sort(tweets, new Comparator<Tweet>() {
-            @Override
-            public int compare(Tweet t1, Tweet t2) {
-                return t2.getTimestamp().compareTo(t1.getTimestamp());
-            }
-        });
+        Collections.sort(tweets, (Tweet t1, Tweet t2) -> t2.getTimestamp().compareTo(t1.getTimestamp()));
 
         tweetPanel.removeAll();
         for (Tweet tweeti : tweets) {

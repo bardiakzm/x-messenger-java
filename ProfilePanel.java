@@ -6,21 +6,25 @@ import javax.swing.border.TitledBorder;
 public class ProfilePanel extends JPanel {
     
     static private User currentUser;
-    private JLabel usernameLabel;
-    private JLabel nameLabel;
-    private JLabel emailLabel;
-    private JLabel phoneLabel;
-    private JLabel ageLabel;
-    private JLabel bioLabel;
-    private JList<String> tweetsList;
-    private JList<String> followersList;
-    private JList<String> followingsList;
-    private JButton returnButton;
+    private final JLabel usernameLabel;
+    private final JLabel nameLabel;
+    private final JLabel emailLabel;
+    private final JLabel phoneLabel;
+    private final JLabel ageLabel;
+    private final JLabel bioLabel;
+    private final JList<String> tweetsList;
+    private final JList<String> followersList;
+    private final JList<String> followingsList;
+    private final JButton returnButton;
+    private final int numberOfFollowers;
+    private final int numberOfFollowings;
+    // private final int numberOfTweets;
 
     public ProfilePanel(String username, StartPage parentFrame, UserPage userPage) {
         Packet.getUser(username);
         currentUser = Packet.getLastReceivedUser();
-
+        numberOfFollowers = currentUser.followers.size();
+        numberOfFollowings = currentUser.followers.size();
         setLayout(new BorderLayout());
 
         // Return button
@@ -92,12 +96,12 @@ public class ProfilePanel extends JPanel {
         // Create the followers list
         followersList = new JList<>();
         JScrollPane followersScrollPane = new JScrollPane(followersList);
-        followersScrollPane.setBorder(BorderFactory.createTitledBorder("Followers"));
+        followersScrollPane.setBorder(BorderFactory.createTitledBorder("Followers:    " + numberOfFollowers));
 
         // Create the followings list
         followingsList = new JList<>();
         JScrollPane followingsScrollPane = new JScrollPane(followingsList);
-        followingsScrollPane.setBorder(BorderFactory.createTitledBorder("Followings"));
+        followingsScrollPane.setBorder(BorderFactory.createTitledBorder("Followings:    " + numberOfFollowings));
 
         // Panel for lists
         JPanel listsPanel = new JPanel(new GridLayout(1, 3, 5, 5));
