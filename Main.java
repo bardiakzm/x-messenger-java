@@ -17,6 +17,7 @@ public class Main implements Serializable{
     static List<Tweet> currentUserSavedTweets;
     static int currentTweetNumber = 0;
     static String logedInUserid = null;
+    static User logedInUser = null;
 
     public static void main(String[] args) {
 

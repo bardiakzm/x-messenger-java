@@ -70,6 +70,8 @@ public class LoginPanel extends JPanel {
             Packet.getFollowingTweets(username);
 
             Main.logedInUserid = username;
+            Packet.getUser(username);
+            Main.logedInUser = Packet.getLastReceivedUser();
             
             UserPage userPage = new UserPage(username, Main.currentUserFollowingTweets, Main.allTweets,parentFrame);
             parentFrame.showUserPage(userPage);

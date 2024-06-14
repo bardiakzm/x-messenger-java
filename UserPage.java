@@ -123,6 +123,8 @@ public class UserPage extends JPanel {
         tweetPanel.removeAll();
         for (Tweet tweeti : tweets) {
             final Tweet tweet = getTweetFromList(tweeti, randomTweets);//get the updated tweet from all tweets list
+            Packet.getUser(tweet.publisherid);
+            final User tweetPublisher=Packet.getLastReceivedUser();
             JPanel tweetContainer = new JPanel(new BorderLayout());
             JPanel profileButtonPanel = new JPanel();
             JButton targetUserProfileButton = new JButton("Profile");
@@ -131,7 +133,7 @@ public class UserPage extends JPanel {
             JButton followButton = new JButton(followedUsers.contains(tweet.publisherid) ? "Unfollow" : "Follow");
             profileButtonPanel.add(followButton);
 
-            JLabel tweetLabel = new JLabel(tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.getLikeCount() + ") " + tweet.getFormattedTimestamp());
+            JLabel tweetLabel = new JLabel( tweetPublisher.name+" || @"+ tweet.publisherid + ": " + tweet.text + " (Likes: " + tweet.getLikeCount() + ") " + tweet.getFormattedTimestamp());
             JPanel buttonPanel = new JPanel();  
             boolean deleteExists = doesUserOwnTweet(tweet, username);
             JButton saveButton = new JButton(doesListContainTweet(tweet, savedTweets) ? "unSave" : "Save");
