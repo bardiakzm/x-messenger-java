@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.swing.*;
 
 public class UserPage extends JPanel {
+    static private JButton lastPressedParentButton;
     private String username;
     private List<Tweet> followingTweets;
     private List<Tweet> randomTweets;
@@ -86,6 +87,7 @@ public class UserPage extends JPanel {
     private void showTweets(String tweetType, JButton parentButton,StartPage parentFrame) {
         lastTouchedButton = parentButton;
         List<Tweet> tweets;
+        lastPressedParentButton = parentButton;
     switch (tweetType) {
         case "Following" -> {
             Packet.getAllTweets();
@@ -236,5 +238,9 @@ public class UserPage extends JPanel {
 
     static boolean doesUserOwnTweet(Tweet tweet,String username){
         return tweet.publisherid.equals(username);
+    }
+
+    static void pressLastPressedParentButton(){
+        lastPressedParentButton.doClick();
     }
 }

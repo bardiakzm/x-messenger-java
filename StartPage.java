@@ -45,6 +45,7 @@ public class StartPage extends JFrame implements Serializable {
         setPreferredSize(new Dimension(1200, 830));
         pack();
         setLocationRelativeTo(null); // Center the window
+        userPage.pressLastPressedParentButton();
         mainPanel.add(userPage, "UserPage");
         cardLayout.show(mainPanel, "UserPage");
     }
