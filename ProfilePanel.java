@@ -35,13 +35,15 @@ public class ProfilePanel extends JPanel {
             if(doesLogedUserFollowProfileUser){ //unfollow
                 followButton.addActionListener((e) -> {
                     Packet.unfollowUser(Main.logedInUserid,currentUser.username);
-                    updateUser();
+                    // updateUser();
+                    parentFrame.showProfilePanel(username,parentFrame,userPage);
                     followButton.setText("Follow");
                 });
             }else{ //follow
                 followButton.addActionListener((e) -> {
                     Packet.followUser(Main.logedInUserid,currentUser.username);
-                    updateUser();
+                    // updateUser();
+                    parentFrame.showProfilePanel(username,parentFrame,userPage);
                     followButton.setText("unFollow");
                 });
             }
