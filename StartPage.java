@@ -49,8 +49,8 @@ public class StartPage extends JFrame implements Serializable {
         cardLayout.show(mainPanel, "UserPage");
     }
 
-    public void showProfilePanel(String username) {
-        ProfilePanel profilePanel = new ProfilePanel(username);
+    public void showProfilePanel(String username,StartPage parentFrame,UserPage userPage) {
+        ProfilePanel profilePanel = new ProfilePanel(username,parentFrame,userPage);
         mainPanel.add(profilePanel, "ProfilePanel");
         cardLayout.show(mainPanel, "ProfilePanel");
         revalidate();

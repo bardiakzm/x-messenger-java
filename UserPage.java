@@ -43,7 +43,7 @@ public class UserPage extends JPanel {
         JButton savedTweetsButton = new JButton("Saved Tweets");
         topPanel.add(profileButton);
         topPanel.add(savedTweetsButton);
-        profileButton.addActionListener(e -> parentFrame.showProfilePanel(username));
+        profileButton.addActionListener(e -> parentFrame.showProfilePanel(username,parentFrame,this));
 
         // Create button panel
         JPanel buttonPanel = new JPanel();
@@ -69,18 +69,18 @@ public class UserPage extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        showTweets("Random",randomButton);
+        showTweets("Random",randomButton,parentFrame);
         // Add action listeners
-        followingButton.addActionListener(e -> showTweets("Following",followingButton));
-        randomButton.addActionListener(e -> showTweets("Random",randomButton));
-        savedTweetsButton.addActionListener(e -> showTweets("Saved",savedTweetsButton));
+        followingButton.addActionListener(e -> showTweets("Following",followingButton,parentFrame));
+        randomButton.addActionListener(e -> showTweets("Random",randomButton,parentFrame));
+        savedTweetsButton.addActionListener(e -> showTweets("Saved",savedTweetsButton,parentFrame));
         composeButton.addActionListener(e -> composeTweet(tweetTextField.getText(),composeButton));
     }
 
     public void setStartPage(StartPage startPage) {
         this.startPage = startPage;
     }
-    private void showTweets(String tweetType, JButton parentButton) {
+    private void showTweets(String tweetType, JButton parentButton,StartPage parentFrame) {
         lastTouchedButton = parentButton;
         List<Tweet> tweets;
     switch (tweetType) {
@@ -122,6 +122,7 @@ public class UserPage extends JPanel {
             JPanel profileButtonPanel = new JPanel();
             JButton targetUserProfileButton = new JButton("Profile");
             profileButtonPanel.add(targetUserProfileButton);
+            targetUserProfileButton.addActionListener(e -> parentFrame.showProfilePanel(tweet.publisherid,parentFrame,this));
             JButton followButton = new JButton(followedUsers.contains(tweet.publisherid) ? "Unfollow" : "Follow");
             profileButtonPanel.add(followButton);
 

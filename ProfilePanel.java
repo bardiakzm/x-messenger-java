@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class ProfilePanel extends JPanel {
-
+    
     static private User currentUser;
     private JLabel usernameLabel;
     private JLabel nameLabel;
@@ -11,8 +11,11 @@ public class ProfilePanel extends JPanel {
     private JLabel ageLabel;
     private JLabel bioLabel;
     private JList<String> tweetsList;
+    private JList<String> followersList;
+    private JList<String> followingsList;
+    private JButton returnButton;
 
-    public ProfilePanel(String username) {
+    public ProfilePanel(String username, StartPage parentFrame,UserPage userPage) {
         Packet.getUser(username);
         currentUser = Packet.getLastReceivedUser();
 
@@ -47,7 +50,29 @@ public class ProfilePanel extends JPanel {
         JScrollPane tweetScrollPane = new JScrollPane(tweetsList);
         tweetScrollPane.setBorder(BorderFactory.createTitledBorder("Tweets"));
 
-        add(tweetScrollPane, BorderLayout.CENTER);
+        // Create the followers list
+        followersList = new JList<>();
+        JScrollPane followersScrollPane = new JScrollPane(followersList);
+        followersScrollPane.setBorder(BorderFactory.createTitledBorder("Followers"));
+
+        // Create the followings list
+        followingsList = new JList<>();
+        JScrollPane followingsScrollPane = new JScrollPane(followingsList);
+        followingsScrollPane.setBorder(BorderFactory.createTitledBorder("Followings"));
+
+        // Panel for lists
+        JPanel listsPanel = new JPanel(new GridLayout(1, 3, 5, 5));
+        listsPanel.add(tweetScrollPane);
+        listsPanel.add(followersScrollPane);
+        listsPanel.add(followingsScrollPane);
+
+        add(listsPanel, BorderLayout.CENTER);
+
+        // Return button
+        returnButton = new JButton("Return");
+        returnButton.addActionListener(e -> parentFrame.showUserPage(userPage));
+
+        add(returnButton, BorderLayout.SOUTH);
 
         // Load user data
         loadUserData();
@@ -65,11 +90,26 @@ public class ProfilePanel extends JPanel {
             ageLabel.setText(String.valueOf(user.age));
             bioLabel.setText(user.bio);
 
+            // Load tweets
             DefaultListModel<String> tweetModel = new DefaultListModel<>();
             for (Tweet tweet : user.savedTweets) {
                 tweetModel.addElement(tweet.toString());
             }
             tweetsList.setModel(tweetModel);
+
+            // Load followers
+            DefaultListModel<String> followersModel = new DefaultListModel<>();
+            for (String follower : user.getFollowers()) {
+                followersModel.addElement(follower);
+            }
+            followersList.setModel(followersModel);
+
+            // Load followings
+            DefaultListModel<String> followingsModel = new DefaultListModel<>();
+            for (String following : user.getFollowings()) {
+                followingsModel.addElement(following);
+            }
+            followingsList.setModel(followingsModel);
         } else {
             JOptionPane.showMessageDialog(this, "User not found.", "Error", JOptionPane.ERROR_MESSAGE);
         }
