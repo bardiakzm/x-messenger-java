@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.util.List;
 
 public class SearchPanel extends JPanel {
 
@@ -45,25 +46,25 @@ public class SearchPanel extends JPanel {
     }
 
     private void performSearch() {
-        // String searchText = searchField.getText().trim();
-        // if (searchText.isEmpty()) {
-        //     JOptionPane.showMessageDialog(this, "Please enter a username to search for.", "Warning", JOptionPane.WARNING_MESSAGE);
-        //     return;
-        // }
+        String searchText = searchField.getText().trim();
+        if (searchText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a username to search for.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        // // Fetch search results from the server
-        // Packet.searchUsers(searchText);
-        // String[] searchResults = Packet.getLastReceivedUsernames();
+        // Fetch search results from the server
+        Packet.searchUsers(searchText);
+        List<String> searchResults = Packet.getLastSearchedUsersList();
 
-        // if (searchResults == null || searchResults.length == 0) {
-        //     JOptionPane.showMessageDialog(this, "No users found with the username: " + searchText, "Information", JOptionPane.INFORMATION_MESSAGE);
-        // } else {
-        //     DefaultListModel<String> resultsModel = new DefaultListModel<>();
-        //     for (String username : searchResults) {
-        //         resultsModel.addElement(username);
-        //     }
-        //     resultsList.setModel(resultsModel);
-        // }
+        if (searchResults == null || searchResults.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No users found with the username: " + searchText, "Information", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            DefaultListModel<String> resultsModel = new DefaultListModel<>();
+            for (String username : searchResults) {
+                resultsModel.addElement(username);
+            }
+            resultsList.setModel(resultsModel);
+        }
     }
 
     // Custom cell renderer to display the user with profile button

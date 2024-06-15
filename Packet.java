@@ -13,6 +13,7 @@ public class Packet implements Serializable {
     String connectionKey;
     String header = "empty header";
     Object data = "empty data";
+    static List<String> lastSearchedUsersList;
     Packet(String header,Object data,String key){
         this.header = header;
         this.data = data;
@@ -133,6 +134,14 @@ public class Packet implements Serializable {
         sendPacket("deleteTweet", tweet, Main.getKey());
     }
 
+    static void searchUsers(String searchText){
+        sendPacket("searchUsers", searchText, Main.getKey());
+    }
+
+    static List<String> getLastSearchedUsersList(){
+        return lastSearchedUsersList;
+    }
+
     @SuppressWarnings("unchecked")
     static void handlePacket(Packet packet){
         switch (packet.header) {
@@ -202,6 +211,11 @@ public class Packet implements Serializable {
                 break;
             case "sentUser":
                 lastReceivedUser = (User)packet.data;
+                Main.lastServerMessage = (String) packet.header;
+                System.out.println(Main.lastServerMessage);
+                break;
+            case "sentSearchedUsersList":
+                lastSearchedUsersList = (List<String>)packet.data;
                 Main.lastServerMessage = (String) packet.header;
                 System.out.println(Main.lastServerMessage);
                 break;
