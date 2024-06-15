@@ -58,7 +58,13 @@ public class StartPage extends JFrame implements Serializable {
         repaint();
     }
 
-    
+    public void showSearchPanel(StartPage parentFrame,UserPage userPage) {
+        SearchPanel profilePanel = new SearchPanel(parentFrame,userPage);
+        mainPanel.add(profilePanel, "ProfilePanel");
+        cardLayout.show(mainPanel, "ProfilePanel");
+        revalidate();
+        repaint();
+    }
     
 
     public static void main(String[] args) {

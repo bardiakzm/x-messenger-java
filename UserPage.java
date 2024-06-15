@@ -41,6 +41,7 @@ public class UserPage extends JPanel {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         JButton profileButton = new JButton("Profile");
         JButton savedTweetsButton = new JButton("Saved Tweets");
+        JButton searchButton = new JButton("Search");
         JButton logOutButton = new JButton("Log out");
         topPanel.add(profileButton);
         topPanel.add(savedTweetsButton);
@@ -53,6 +54,8 @@ public class UserPage extends JPanel {
         topPanel.add(followingButton);
         topPanel.add(randomButton);
         topPanel.add(savedTweetsButton);
+        topPanel.add(searchButton);
+        searchButton.addActionListener(e -> parentFrame.showSearchPanel(parentFrame,this));
         topPanel.add(logOutButton,BorderLayout.EAST);
         logOutButton.addActionListener(e -> parentFrame.showStartPanel());
 
