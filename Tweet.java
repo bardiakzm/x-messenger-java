@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -14,6 +15,7 @@ public class Tweet implements Serializable {
     HashSet<String> likedUsers;
     boolean saveProtected;
     boolean followingProtected;
+    ArrayList<Tweet> comments;
 
     Tweet(String username, String text,int tweetNumber,boolean saveProtected,boolean followingProtected) {
         this.publisherid = username;
@@ -24,6 +26,7 @@ public class Tweet implements Serializable {
         this.likedUsers = new HashSet<>();
         this.saveProtected = saveProtected;
         this.followingProtected = followingProtected;
+        this.comments = new ArrayList<Tweet>();
     }
 
     public String getFormattedTimestamp() {

@@ -22,7 +22,6 @@ public class Main implements Serializable{
     public static void main(String[] args) {
 
         Packet.sendPacket("clientHello", "connected successfully",getKey());
-        Packet.sendPacket("startPage", "entered startpage",getKey());
 
         SwingUtilities.invokeLater(StartPage::new);
     }

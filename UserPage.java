@@ -161,6 +161,7 @@ public class UserPage extends JPanel {
                 JButton likeButton = new JButton(tweet.likedUsers.contains(username) ? "unLike" : "Like");
                 JButton commentButton = new JButton("Comments");
                 buttonPanel.add(commentButton);
+                commentButton.addActionListener((e) -> parentFrame.showCommentPanel(tweet,this,parentFrame));
                 buttonPanel.add(likeButton);
                 if (!tweet.saveProtected) {
                     buttonPanel.add(saveButton);

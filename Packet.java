@@ -64,6 +64,11 @@ public class Packet implements Serializable {
         Tweet tweet = new Tweet(username, text,Main.currentTweetNumber,saveProtected,followingProtected);
         sendPacket("newTweet", tweet, Main.getKey());
     }
+
+    static void sendComment(Tweet comment,Tweet tweet){
+        CommentPack data = new CommentPack(comment,tweet);
+        sendPacket("newComment", data, Main.getKey());
+    }
     static void loginUser(String username, String password){
         LoginPacket data = new LoginPacket(username, password);
         sendPacket("loginUser", data, Main.getKey());
@@ -224,6 +229,10 @@ public class Packet implements Serializable {
                 Main.lastServerMessage = (String) packet.header;
                 System.out.println(Main.lastServerMessage);
                 break;
+            case "commented":
+                Main.lastServerMessage = (String) packet.data;
+                System.out.println(Main.lastServerMessage);
+                break;
             default:
                 break;
         }
@@ -248,6 +257,16 @@ class SaveTweetPack implements Serializable {
     SaveTweetPack(String saverUserame,Tweet tweet){
         this.saverUserame = saverUserame;
         this.tweet = tweet;
+    }
+}
+
+class CommentPack implements Serializable {
+    private static final long serialVersionUID = 1L;
+    Tweet tweet;
+    Tweet comment;
+    CommentPack(Tweet comment,Tweet tweet){
+        this.tweet = tweet;
+        this.comment = comment;
     }
 }
 
