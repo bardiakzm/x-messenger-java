@@ -1,19 +1,22 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
+
 import javax.swing.*;
 import java.util.List;
 
-public class SearchPanel extends JPanel {
+public class SearchPanel extends JPanel implements Serializable {
 
     private final JTextField searchField;
     private final JButton searchButton;
     private final JButton returnButton;
-    private final JList<String> resultsList;
+    private final JPanel resultsPanel;
     private final StartPage parentFrame;
     private final UserPage userPage;
 
     public SearchPanel(StartPage parentFrame, UserPage userPage) {
+        Packet.updateLoggedInUser();
         this.parentFrame = parentFrame;
         this.userPage = userPage;
 
@@ -30,10 +33,10 @@ public class SearchPanel extends JPanel {
         searchPanel.add(searchButton);
         add(searchPanel, BorderLayout.NORTH);
 
-        // Create the results list in the center
-        resultsList = new JList<>(new DefaultListModel<>());
-        resultsList.setCellRenderer(new UserCellRenderer());
-        JScrollPane resultsScrollPane = new JScrollPane(resultsList);
+        // Create the results panel in the center
+        resultsPanel = new JPanel();
+        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
+        JScrollPane resultsScrollPane = new JScrollPane(resultsPanel);
         add(resultsScrollPane, BorderLayout.CENTER);
 
         // Add action listener to the search button
@@ -56,45 +59,65 @@ public class SearchPanel extends JPanel {
         Packet.searchUsers(searchText);
         List<String> searchResults = Packet.getLastSearchedUsersList();
 
+        resultsPanel.removeAll();
+
         if (searchResults == null || searchResults.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No users found with the username: " + searchText, "Information", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            DefaultListModel<String> resultsModel = new DefaultListModel<>();
             for (String username : searchResults) {
-                resultsModel.addElement(username);
+                resultsPanel.add(createUserPanel(username));
             }
-            resultsList.setModel(resultsModel);
         }
+
+        resultsPanel.revalidate();
+        resultsPanel.repaint();
     }
 
-    // Custom cell renderer to display the user with profile button
-    private class UserCellRenderer extends JPanel implements ListCellRenderer<String> {
-        private final JLabel nameLabel = new JLabel();
-        private final JButton profileButton = new JButton("Profile");
+    private JPanel createUserPanel(String username) {
+        JPanel userPanel = new JPanel(new BorderLayout());
+        JLabel nameLabel = new JLabel(username);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        
+        JButton profileButton = new JButton("Profile");
+        JButton followButton = new JButton(isFollowing(username) ? "Unfollow" : "Follow");
 
-        public UserCellRenderer() {
-            setLayout(new BorderLayout());
-            add(nameLabel, BorderLayout.CENTER);
-            add(profileButton, BorderLayout.EAST);
-        }
+        profileButton.addActionListener(e -> {
+            System.out.println("Profile button clicked for user: " + username);
+            parentFrame.showProfilePanel(username, parentFrame, userPage);
+        });
 
-        @Override
-        public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
-                                                      boolean isSelected, boolean cellHasFocus) {
-            nameLabel.setText(value);
-
-            // Remove previous action listeners to avoid duplication
-            for (ActionListener al : profileButton.getActionListeners()) {
-                profileButton.removeActionListener(al);
+        followButton.addActionListener(e -> {
+            if (isFollowing(username)) {
+                unfollowUser(username);
+            } else {
+                followUser(username);
             }
+            followButton.setText(isFollowing(username) ? "Unfollow" : "Follow");
+        });
 
-            profileButton.addActionListener(e -> {
-                System.out.println("Profile button clicked for user: " + value); // Debug statement
-                parentFrame.showProfilePanel(value, parentFrame, userPage);
-            });
-            
-            setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
-            return this;
-        }
+        buttonPanel.add(profileButton);
+        buttonPanel.add(followButton);
+
+        userPanel.add(nameLabel, BorderLayout.CENTER);
+        userPanel.add(buttonPanel, BorderLayout.EAST);
+
+        return userPanel;
+    }
+
+    private boolean isFollowing(String username) {
+        // Check if the logged-in user is following the given username
+        return Main.logedInUser.followings.contains(username);
+    }
+
+    private void followUser(String username) {
+        Packet.followUser(Main.logedInUserid, username);
+        JOptionPane.showMessageDialog(this, "You are now following " + username, "Follow Successful", JOptionPane.INFORMATION_MESSAGE);
+        Packet.updateLoggedInUser();
+    }
+
+    private void unfollowUser(String username) {
+        Packet.unfollowUser(Main.logedInUserid, username);
+        JOptionPane.showMessageDialog(this, "You have unfollowed " + username, "Unfollow Successful", JOptionPane.INFORMATION_MESSAGE);
+        Packet.updateLoggedInUser();
     }
 }

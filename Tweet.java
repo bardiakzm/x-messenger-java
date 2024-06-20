@@ -12,14 +12,18 @@ public class Tweet implements Serializable {
     Date timestamp;
     int tweetNumber;
     HashSet<String> likedUsers;
+    boolean saveProtected;
+    boolean followingProtected;
 
-    Tweet(String username, String text,int tweetNumber) {
+    Tweet(String username, String text,int tweetNumber,boolean saveProtected,boolean followingProtected) {
         this.publisherid = username;
         this.text = text;
         this.likes = 0;
         this.timestamp = new Date(); // Set the current date and time
         this.tweetNumber = tweetNumber;
         this.likedUsers = new HashSet<>();
+        this.saveProtected = saveProtected;
+        this.followingProtected = followingProtected;
     }
 
     public String getFormattedTimestamp() {

@@ -58,10 +58,10 @@ public class Packet implements Serializable {
         User newUser = new User(username, password, name, email, phone, age, bio);
         sendPacket("newUser", newUser, Main.getKey());
     }
-    static void sendtweet(String username,String text){
+    static void sendtweet(String username,String text,boolean saveProtected,boolean followingProtected){
         getCurrentTweetNumber();
         Main.currentTweetNumber++;
-        Tweet tweet = new Tweet(username, text,Main.currentTweetNumber);
+        Tweet tweet = new Tweet(username, text,Main.currentTweetNumber,saveProtected,followingProtected);
         sendPacket("newTweet", tweet, Main.getKey());
     }
     static void loginUser(String username, String password){
@@ -92,6 +92,11 @@ public class Packet implements Serializable {
 
     static User getLastReceivedUser(){
         return lastReceivedUser;
+    }
+
+    static void updateLoggedInUser(){
+        getUser(Main.logedInUserid);
+        Main.logedInUser = lastReceivedUser;
     }
 
     static void unfollowUser(String username,String targetUsername){
