@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.List;
 import javax.swing.*;
@@ -22,12 +20,8 @@ public class SearchPanel extends JPanel implements Serializable {
         this.userPage = userPage;
 
         setLayout(new BorderLayout());
-
-        // Create the search panel at the top with a nested layout
-        JPanel searchPanel = new JPanel(new BorderLayout());
-        
-        // Left panel containing return button and search field
-        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel searchPanel = new JPanel(new BorderLayout()); // create the search panel at the top
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));//create left panel containing return button and search field
         returnButton = new JButton("Return");
         searchField = new JTextField(20);
         searchButton = new JButton("Search");
@@ -44,15 +38,9 @@ public class SearchPanel extends JPanel implements Serializable {
         searchPanel.add(leftPanel, BorderLayout.WEST);
         searchPanel.add(rightPanel, BorderLayout.EAST);
         
-        // Add action listeners
         returnButton.addActionListener(e -> parentFrame.showUserPage(userPage));
         historyButton.addActionListener(e -> showHistory());
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                performSearch();
-            }
-        });
+        searchButton.addActionListener(e -> performSearch());
 
         add(searchPanel, BorderLayout.NORTH);
 
@@ -70,7 +58,6 @@ public class SearchPanel extends JPanel implements Serializable {
             return;
         }
 
-        // Fetch search results from the server
         Packet.searchUsers(searchText);
         List<String> searchResults = Packet.getLastSearchedUsersList();
 
