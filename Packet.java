@@ -14,6 +14,7 @@ public class Packet implements Serializable {
     String header = "empty header";
     Object data = "empty data";
     static List<String> lastSearchedUsersList;
+    static private List<String> lastReceivedSearchHistory;
     Packet(String header,Object data,String key){
         this.header = header;
         this.data = data;
@@ -145,11 +146,20 @@ public class Packet implements Serializable {
     }
 
     static void searchUsers(String searchText){
-        sendPacket("searchUsers", searchText, Main.getKey());
+        SearchPack data = new SearchPack(searchText,Main.logedInUserid);
+        sendPacket("searchUsers", data, Main.getKey());
     }
 
     static List<String> getLastSearchedUsersList(){
         return lastSearchedUsersList;
+    }
+
+    static void getSearchHistory(String searcher){
+        sendPacket("getSearchHistory",searcher,Main.getKey());
+    }
+
+    static List<String> getLastReceivedSearchHistory(){
+        return lastReceivedSearchHistory;
     }
 
     @SuppressWarnings("unchecked")
@@ -233,6 +243,11 @@ public class Packet implements Serializable {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
             }
+            case "sentSearchHistroy" -> {
+                lastReceivedSearchHistory = (List<String>) packet.data;
+                Main.lastServerMessage = (String) packet.header;
+                System.out.println(Main.lastServerMessage);
+            }
             default -> {
             }
         }
@@ -269,4 +284,15 @@ class CommentPack implements Serializable {
         this.comment = comment;
     }
 }
+
+class SearchPack implements Serializable {
+    private static final long serialVersionUID = 1L;
+    String text;
+    String searcher;
+    SearchPack(String text,String searcher){
+        this.searcher = searcher;
+        this.text = text;
+    }
+}
+
 

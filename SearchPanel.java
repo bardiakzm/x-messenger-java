@@ -2,18 +2,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
-
-import javax.swing.*;
 import java.util.List;
+import javax.swing.*;
 
 public class SearchPanel extends JPanel implements Serializable {
 
     private final JTextField searchField;
     private final JButton searchButton;
     private final JButton returnButton;
+    private final JButton historyButton;
     private final JPanel resultsPanel;
     private final StartPage parentFrame;
     private final UserPage userPage;
+    private static List<String> searchHistory;
 
     public SearchPanel(StartPage parentFrame, UserPage userPage) {
         Packet.updateLoggedInUser();
@@ -22,15 +23,37 @@ public class SearchPanel extends JPanel implements Serializable {
 
         setLayout(new BorderLayout());
 
-        // Create the search panel at the top
-        JPanel searchPanel = new JPanel(new FlowLayout());
+        // Create the search panel at the top with a nested layout
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        
+        // Left panel containing return button and search field
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         returnButton = new JButton("Return");
         searchField = new JTextField(20);
         searchButton = new JButton("Search");
-        searchPanel.add(returnButton);
+        leftPanel.add(returnButton);
+        leftPanel.add(searchField);
+        leftPanel.add(searchButton);
+
+        // Right panel containing history button
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        historyButton = new JButton("History");
+        rightPanel.add(historyButton);
+
+        // Add left and right panels to the search panel
+        searchPanel.add(leftPanel, BorderLayout.WEST);
+        searchPanel.add(rightPanel, BorderLayout.EAST);
+        
+        // Add action listeners
         returnButton.addActionListener(e -> parentFrame.showUserPage(userPage));
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
+        historyButton.addActionListener(e -> showHistory());
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                performSearch();
+            }
+        });
+
         add(searchPanel, BorderLayout.NORTH);
 
         // Create the results panel in the center
@@ -38,14 +61,6 @@ public class SearchPanel extends JPanel implements Serializable {
         resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
         JScrollPane resultsScrollPane = new JScrollPane(resultsPanel);
         add(resultsScrollPane, BorderLayout.CENTER);
-
-        // Add action listener to the search button
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                performSearch();
-            }
-        });
     }
 
     private void performSearch() {
@@ -77,7 +92,7 @@ public class SearchPanel extends JPanel implements Serializable {
         JPanel userPanel = new JPanel(new BorderLayout());
         JLabel nameLabel = new JLabel(username);
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        
+
         JButton profileButton = new JButton("Profile");
         JButton followButton = new JButton(isFollowing(username) ? "Unfollow" : "Follow");
 
@@ -119,5 +134,30 @@ public class SearchPanel extends JPanel implements Serializable {
         Packet.unfollowUser(Main.logedInUserid, username);
         JOptionPane.showMessageDialog(this, "You have unfollowed " + username, "Unfollow Successful", JOptionPane.INFORMATION_MESSAGE);
         Packet.updateLoggedInUser();
+    }
+
+    private void showHistory() {
+        Packet.getSearchHistory(Main.logedInUserid);
+        searchHistory = Packet.getLastReceivedSearchHistory();
+        
+        if (searchHistory == null || searchHistory.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No search history available.", "Search History", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JDialog historyDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Search History", true);
+            historyDialog.setSize(300, 200);
+            historyDialog.setLocationRelativeTo(this);
+            
+            JPanel historyPanel = new JPanel();
+            historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
+            
+            for (String historyItem : searchHistory) {
+                JLabel historyLabel = new JLabel(historyItem);
+                historyPanel.add(historyLabel);
+            }
+            
+            JScrollPane historyScrollPane = new JScrollPane(historyPanel);
+            historyDialog.add(historyScrollPane);
+            historyDialog.setVisible(true);
+        }
     }
 }
