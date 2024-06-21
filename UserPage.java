@@ -163,6 +163,9 @@ public class UserPage extends JPanel {
                 buttonPanel.add(commentButton);
                 commentButton.addActionListener((e) -> parentFrame.showCommentPanel(tweet,this,parentFrame));
                 buttonPanel.add(likeButton);
+                JButton likedUsersButton = new JButton("Liked Users");
+                likedUsersButton.addActionListener(e -> parentFrame.showLikedUsersPanel(tweet, this));
+                buttonPanel.add(likedUsersButton);
                 if (!tweet.saveProtected) {
                     buttonPanel.add(saveButton);
                 }

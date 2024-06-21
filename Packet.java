@@ -155,86 +155,86 @@ public class Packet implements Serializable {
     @SuppressWarnings("unchecked")
     static void handlePacket(Packet packet){
         switch (packet.header) {
-            case "userAddFailed":
+            case "userAddFailed" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(packet.header);
-                break;
-            case "userAddSuccessfull":
+            }
+            case "userAddSuccessfull" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(packet.header);
-                break;
-            case "sentAllTweets":
+            }
+            case "sentAllTweets" -> {
                 Main.allTweets = (List<Tweet>) packet.data;
                 System.out.println(packet.header);
-                break;
-            case "sentUserFollowings":
+            }
+            case "sentUserFollowings" -> {
                 Main.currentUserFollowings = (HashSet<String>) packet.data;
                 System.out.println("synced user followings with server");
                 System.out.println(packet.header);
-                break;
-            case "followed":
+            }
+            case "followed" -> {
                 Main.currentUserFollowings = (HashSet<String>) packet.data;
                 System.out.println(packet.header);
-                break;
-            case "unfollowed":
+            }
+            case "unfollowed" -> {
                 Main.currentUserFollowings = (HashSet<String>) packet.data;
                 System.out.println(packet.header);
-                break;
-            case "tweeted":
+            }
+            case "tweeted" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(packet.header);
-                break;
-            case "sentFollowingTweets":
+            }
+            case "sentFollowingTweets" -> {
                 Main.currentUserFollowingTweets = (List<Tweet>) packet.data;
                 Main.lastServerMessage = (String) packet.header;
                 System.out.println(packet.header);
-                break;
-            case "sentCurrentTweetNumber":
+            }
+            case "sentCurrentTweetNumber" -> {
                 Main.currentTweetNumber= (int) packet.data;
                 Main.lastServerMessage = (String) packet.header;
                 System.out.println(packet.header);
-                break;
-            case "savedTweet":
+            }
+            case "savedTweet" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
-                break;
-            case "unSavedTweet":
+            }
+            case "unSavedTweet" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
-                break;
-            case "sentSavedTweets":
+            }
+            case "sentSavedTweets" -> {
                 Main.lastServerMessage = (String) packet.header;
                 Main.currentUserSavedTweets = (List<Tweet>) packet.data;
                 System.out.println(Main.lastServerMessage);
-                break;
-            case "liked":
+            }
+            case "liked" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
-                break;
-            case "removedLike":
+            }
+            case "removedLike" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
-                break;
-            case "deletedTweet":
+            }
+            case "deletedTweet" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
-                break;
-            case "sentUser":
+            }
+            case "sentUser" -> {
                 lastReceivedUser = (User)packet.data;
                 Main.lastServerMessage = (String) packet.header;
                 System.out.println(Main.lastServerMessage);
-                break;
-            case "sentSearchedUsersList":
+            }
+            case "sentSearchedUsersList" -> {
                 lastSearchedUsersList = (List<String>)packet.data;
                 Main.lastServerMessage = (String) packet.header;
                 System.out.println(Main.lastServerMessage);
-                break;
-            case "commented":
+            }
+            case "commented" -> {
                 Main.lastServerMessage = (String) packet.data;
                 System.out.println(Main.lastServerMessage);
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
     

@@ -74,7 +74,14 @@ public class StartPage extends JFrame implements Serializable {
         repaint();
     }
     
-
+    public void showLikedUsersPanel(Tweet tweet, UserPage userPage) {
+        LikedUsersPanel likedUsersPanel = new LikedUsersPanel(tweet, userPage, this);
+        mainPanel.add(likedUsersPanel, "LikedUsersPanel");
+        cardLayout.show(mainPanel, "LikedUsersPanel");
+        revalidate();
+        repaint();
+    }
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(StartPage::new);
     }
