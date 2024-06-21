@@ -82,7 +82,4 @@ public class StartPage extends JFrame implements Serializable {
         repaint();
     }
     
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(StartPage::new);
-    }
 }

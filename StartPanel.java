@@ -25,7 +25,6 @@ public class StartPanel extends JPanel {
         gbc.gridy = 3;
         add(signUpButton, gbc);
 
-        // Add action listeners for buttons
         loginButton.addActionListener(e -> parentFrame.showLoginPanel());
         signUpButton.addActionListener(e -> parentFrame.showSignUpPanel());
     }

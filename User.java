@@ -29,33 +29,23 @@ public class User implements Serializable {
         this.followers = new HashSet<>();
         this.savedTweets = new ArrayList<>();
     }
-
-    // Add a following
     public void addFollowing(String username) {
         followings.add(username);
     }
 
-    // Remove a following
     public void removeFollowing(String username) {
         followings.remove(username);
     }
-
-    // Add a follower
     public void addFollower(String username) {
         followers.add(username);
     }
-
-    // Remove a follower
     public void removeFollower(String username) {
         followers.remove(username);
     }
-
-    // Get followings
     public Set<String> getFollowings() {
         return followings;
     }
 
-    // Get followers
     public Set<String> getFollowers() {
         return followers;
     }
